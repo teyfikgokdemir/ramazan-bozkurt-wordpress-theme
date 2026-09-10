@@ -261,3 +261,5 @@ add_filter('woocommerce_output_related_products_args', function($args) { $args['
 function rb_cart_count() { return (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0; }
 function rb_cart_fragments($fragments) { ob_start(); ?><span class="rb-cart-count"><?php echo esc_html(rb_cart_count()); ?></span><?php $fragments['.rb-cart-count'] = ob_get_clean(); return $fragments; }
 add_filter('woocommerce_add_to_cart_fragments', 'rb_cart_fragments');
+
+require_once get_template_directory() . '/inc/delivery-setup.php';
