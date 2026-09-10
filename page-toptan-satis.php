@@ -7,15 +7,18 @@ $visual = rb_media_first([
     'ramazan-bozkurt-kayseri-aile-manti-banner'
 ]);
 $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler');
-$whatsapp = 'https://wa.me/905398248295?text=' . rawurlencode('Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. Kurumsal tedarik ve toptan alım için teklif almak istiyorum.');
+$wa_number = function_exists('rb_theme_setting') ? rb_theme_setting('whatsapp', '905398248295') : '905398248295';
+$b2b_title = function_exists('rb_theme_setting') ? rb_theme_setting('b2b_title', 'Kurumsal Tedarik') : 'Kurumsal Tedarik';
+$b2b_message = function_exists('rb_theme_setting') ? rb_theme_setting('b2b_message', 'Zincir market, şarküteri, HORECA ve düzenli alım yapan işletmeler için doğrudan teklif süreci.') : 'Zincir market, şarküteri, HORECA ve düzenli alım yapan işletmeler için doğrudan teklif süreci.';
+$whatsapp = 'https://wa.me/' . rawurlencode($wa_number) . '?text=' . rawurlencode('Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. Kurumsal tedarik ve toptan alım için teklif almak istiyorum.');
 ?>
 <section class="rb-b2b-hero">
   <div class="rb-b2b-hero__media"><?php if ($visual) : ?><img src="<?php echo esc_url($visual); ?>" alt="Ramazan Bozkurt kurumsal tedarik ve toptan satış" fetchpriority="high"><?php endif; ?></div>
   <div class="rb-b2b-hero__veil"></div>
   <div class="rb-container rb-b2b-hero__content">
-    <div class="rb-eyebrow">B2B • Kurumsal Tedarik • Kayseri</div>
+    <div class="rb-eyebrow">B2B • <?php echo esc_html($b2b_title); ?> • Kayseri</div>
     <h1>Düzenli alım yapan işletmelere güçlü ve doğrudan tedarik kanalı.</h1>
-    <p>Zincir market, yerel market, şarküteri, restoran, otel, kafe ve profesyonel mutfaklar için pastırma, sucuk, kavurma ve mantıda sipariş hacmine göre teklif süreci.</p>
+    <p><?php echo esc_html($b2b_message); ?></p>
     <div class="rb-actions"><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($whatsapp); ?>" target="_blank" rel="noopener noreferrer">WhatsApp’tan Teklif Al</a><a class="rb-btn rb-btn--ghost" href="#tedarik-modeli">Tedarik Modelini İncele</a></div>
     <div class="rb-b2b-hero__facts"><span><strong>4 ana ürün grubu</strong>Pastırma • Sucuk • Kavurma • Mantı</span><span><strong>Hacme göre teklif</strong>Düzenli ve toplu siparişlerde ticari görüşme</span><span><strong>Kayseri merkezli</strong>Türkiye geneli kurumsal tedarik görüşmesi</span></div>
   </div>
