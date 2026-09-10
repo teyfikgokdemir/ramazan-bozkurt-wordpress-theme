@@ -4,6 +4,15 @@
  */
 defined('ABSPATH') || exit;
 
+require_once get_template_directory() . '/inc/content-hub.php';
+
+function rb_experience_assets() {
+    $version = wp_get_theme()->get('Version');
+    wp_enqueue_style('rb-product-experience', get_template_directory_uri() . '/assets/css/product-experience.css', ['rb-style'], $version);
+    wp_enqueue_style('rb-blog', get_template_directory_uri() . '/assets/css/blog.css', ['rb-style'], $version);
+}
+add_action('wp_enqueue_scripts', 'rb_experience_assets', 30);
+
 function rb_product_description_tab_callback() {
     global $post, $product;
     if (!$post || !$product) { return; }
