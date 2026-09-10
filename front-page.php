@@ -21,6 +21,7 @@ $categories = [
   ['title'=>'Kavurma','slug'=>'kavurma','text'=>'250 g, 500 g ve 1 kg gramaj seçenekleriyle kavurma.','image'=>rb_media_first(['ramazan-bozkurt-kayseri-kavurma-premium-sunum','ramazan-bozkurt-kayseri-kavurma-urun-sunumu'])],
   ['title'=>'Mantı','slug'=>'manti','text'=>'250 g, 500 g ve 1 kg seçenekleriyle Kayseri mantısı.','image'=>rb_media_first(['ramazan-bozkurt-kayseri-mantisi-geleneksel','ramazan-bozkurt-kayseri-mantisi-paket'])],
 ];
+$b2b_visual = rb_media_first(['ramazan-bozkurt-kayseri-pastirma-sucuk-manti-kavurma','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']);
 ?>
 <section class="rb-hero<?php echo $hero ? ' has-media' : ''; ?>" aria-label="Ramazan Bozkurt Et ve Et Mamulleri">
   <?php if ($hero) : ?><div class="rb-hero__media"><img src="<?php echo esc_url($hero); ?>" alt="Ramazan Bozkurt Et ve Et Mamulleri Kayseri pastırma sucuk kavurma ve mantı" fetchpriority="high"></div><?php endif; ?>
@@ -46,20 +47,27 @@ $categories = [
 </div></section>
 <?php endif; ?>
 
-<section class="rb-b2b" aria-labelledby="rb-b2b-title"><div class="rb-container">
-  <div class="rb-b2b__head"><div><div class="rb-eyebrow">B2B • Kurumsal Tedarik</div><h2 id="rb-b2b-title">Zincir marketten horeca kanalına, profesyonel alıma uygun tedarik görüşmesi.</h2></div><p>Ramazan Bozkurt Et ve Et Mamulleri, perakendenin yanında toptan ticaret odağıyla kurumsal talepleri de karşılamaya yönelik bir satış yapısı kurar. Ürün, gramaj, sipariş hacmi ve teslimat planı üzerinden işletmeye özel teklif hazırlanır.</p></div>
-  <div class="rb-b2b__grid">
-    <article><span>01</span><h3>Zincir ve yerel marketler</h3><p>Raf planı, ürün grubu, gramaj ve sipariş hacmine göre tedarik görüşmesi ve teklif süreci.</p></article>
-    <article><span>02</span><h3>Şarküteri & gurme satış noktaları</h3><p>Pastırma, sucuk, kavurma ve mantı için düzenli alım ve ürün bazlı toplu sipariş değerlendirmesi.</p></article>
-    <article><span>03</span><h3>HORECA</h3><p>Restoran, otel, kafe ve profesyonel mutfaklar için ihtiyaca göre ürün ve miktar planlaması.</p></article>
-    <article><span>04</span><h3>Bayi & kurumsal alım</h3><p>Düzenli veya yüksek hacimli siparişlerde ticari koşulların doğrudan görüşüldüğü B2B teklif akışı.</p></article>
+<section class="rb-b2b-premium" aria-labelledby="rb-b2b-title">
+  <div class="rb-container">
+    <div class="rb-b2b-premium__intro">
+      <div><div class="rb-eyebrow">Kurumsal Tedarik</div><h2 id="rb-b2b-title">Perakende rafından profesyonel mutfağa, güçlü bir tedarik dili.</h2></div>
+      <p>Ramazan Bozkurt Et ve Et Mamulleri; zincir ve yerel marketler, şarküteriler, HORECA işletmeleri ve düzenli alım yapan profesyonel müşteriler için ürün, gramaj ve sipariş hacmine göre kurumsal teklif süreci yürütür.</p>
+    </div>
+    <div class="rb-b2b-premium__stage">
+      <div class="rb-b2b-premium__visual"><?php if($b2b_visual): ?><img src="<?php echo esc_url($b2b_visual); ?>" alt="Ramazan Bozkurt kurumsal tedarik ürün seçkisi" loading="lazy"><?php endif; ?><div class="rb-b2b-premium__seal"><span>B2B</span><small>Kayseri’den<br>kurumsal tedarik</small></div></div>
+      <div class="rb-b2b-premium__content">
+        <div class="rb-b2b-premium__line"><h3>Market & Şarküteri</h3><p>Raf yapısı, ürün grubu, gramaj ve sipariş hacmine göre sürdürülebilir tedarik görüşmesi.</p></div>
+        <div class="rb-b2b-premium__line"><h3>HORECA</h3><p>Restoran, otel, kafe ve profesyonel mutfaklar için düzenli alım ve ürün planlaması.</p></div>
+        <div class="rb-b2b-premium__line"><h3>Kurumsal & Bayi</h3><p>Yüksek hacimli veya tekrar eden siparişlerde doğrudan tekliflendirme ve ticari görüşme.</p></div>
+        <div class="rb-b2b-premium__action"><div><strong>Kurumsal satın alma için doğrudan görüşün.</strong><span>Ürünleri, tahmini miktarı ve teslimat şehrini paylaşmanız yeterli.</span></div><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif Al</a></div>
+      </div>
+    </div>
   </div>
-  <div class="rb-b2b__footer"><div><strong>Kurumsal satın alma mı yapıyorsunuz?</strong><span>İhtiyacınız olan ürünleri, tahmini miktarı ve teslimat şehrini paylaşın.</span></div><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">B2B Teklif Talebi</a></div>
-</div></section>
+</section>
 
 <section class="rb-wholesale-home" aria-labelledby="rb-wholesale-title"><div class="rb-container rb-wholesale-home__grid"><div class="rb-wholesale-home__copy"><div class="rb-eyebrow">Toptan Satış</div><h2 id="rb-wholesale-title">Düzenli ve yüksek hacimli alımlarda özel fiyat alın.</h2><p>Zincir market, yerel market, şarküteri, restoran, otel, kafe ve diğer işletmeler için pastırma, sucuk, kavurma ve mantıda sipariş miktarına göre teklif hazırlıyoruz.</p><div class="rb-wholesale-points"><span>B2B tekliflendirme</span><span>Düzenli tedarik görüşmesi</span><span>Kurumsal satın alma desteği</span><span>Toplu siparişe özel fiyat</span></div><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif İste</a></div><div class="rb-wholesale-home__visual"><?php $wholesale_visual=rb_media_first(['ramazan-bozkurt-kayseri-pastirma-sucuk-manti-kavurma','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']); if($wholesale_visual): ?><img src="<?php echo esc_url($wholesale_visual); ?>" alt="Ramazan Bozkurt kurumsal ve toptan pastırma sucuk kavurma ve mantı tedariki" loading="lazy"><?php endif; ?></div></div></section>
 
-<section class="rb-proof"><div class="rb-container"><div class="rb-proof-grid"><article><span>01</span><h3>Gramajını seç</h3><p>Her ana ürün grubunda 250 g, 500 g ve 1 kg seçeneklerinden ihtiyacınıza uygun olanı seçin.</p></article><article><span>02</span><h3>Sepetini tamamla</h3><p>Sepetiniz 4.000 TL’nin altındaysa 180 TL kargo uygulanır; eksik tutar dinamik olarak gösterilir.</p></article><article><span>03</span><h3>Toptan alımda teklif iste</h3><p>Düzenli veya yüksek adetli alımlarda ürün sayfaları ve Toptan Satış sayfasından doğrudan teklif isteyin.</p></article></div></div></section>
+<section class="rb-proof"><div class="rb-container"><div class="rb-proof-grid"><article><h3>Gramajını seç</h3><p>Her ana ürün grubunda 250 g, 500 g ve 1 kg seçeneklerinden ihtiyacınıza uygun olanı seçin.</p></article><article><h3>Sepetini tamamla</h3><p>Sepetiniz 4.000 TL’nin altındaysa 180 TL kargo uygulanır; eksik tutar dinamik olarak gösterilir.</p></article><article><h3>Toptan alımda teklif iste</h3><p>Düzenli veya yüksek adetli alımlarda ürün sayfaları ve Toptan Satış sayfasından doğrudan teklif isteyin.</p></article></div></div></section>
 
 <section class="rb-cta rb-cta--wholesale"><div class="rb-container rb-cta__inner"><div><div class="rb-eyebrow">Perakende + B2B</div><h2>Tek mağazada bireysel sipariş; ayrı kanalda kurumsal tedarik.</h2></div><div class="rb-actions"><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($shop_url); ?>">Mağazaya Git</a><a class="rb-btn rb-btn--ghost" href="<?php echo esc_url($wholesale_url); ?>">B2B Teklif Al</a></div></div></section>
 <?php get_footer(); ?>
