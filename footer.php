@@ -54,6 +54,7 @@ $rb_whatsapp_url = 'https://wa.me/' . $rb_whatsapp_phone . '?text=' . rawurlenco
         <a href="<?php echo esc_url(wc_get_cart_url()); ?>">Sepet</a>
       <?php endif; ?>
       <a href="<?php echo esc_url(home_url('/toptan-satis')); ?>">Toptan Satış</a>
+      <a href="<?php echo esc_url(home_url('/sikca-sorulan-sorular')); ?>">Sıkça Sorulan Sorular</a>
       <a href="<?php echo esc_url(home_url('/iletisim')); ?>">İletişim</a>
       <a href="tel:<?php echo esc_attr($rb_phone_tel); ?>">Telefon: <?php echo esc_html($rb_phone_display); ?></a>
       <a href="<?php echo esc_url($rb_whatsapp_url); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
