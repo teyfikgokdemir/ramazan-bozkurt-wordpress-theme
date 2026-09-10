@@ -57,6 +57,13 @@ function rb_get_media_url_by_slug($slug) {
 
 function rb_media($slug, $fallback = '') { $url = rb_get_media_url_by_slug($slug); return $url ?: $fallback; }
 function rb_media_first(array $slugs) { foreach ($slugs as $slug) { $url = rb_media($slug); if ($url) { return $url; } } return ''; }
+function rb_media_id_first(array $slugs) {
+    foreach ($slugs as $slug) {
+        $attachment = get_page_by_path($slug, OBJECT, 'attachment');
+        if ($attachment) { return (int) $attachment->ID; }
+    }
+    return 0;
+}
 
 function rb_product_category_url($slug) {
     if (!taxonomy_exists('product_cat')) { return home_url('/urunler'); }
@@ -93,6 +100,113 @@ function rb_seed_site_structure() {
     update_option('rb_site_seed_v2', 1);
 }
 add_action('admin_init', 'rb_seed_site_structure', 30);
+
+function rb_seed_premium_demo_v3() {
+    if (get_option('rb_site_seed_v3')) { return; }
+
+    if (get_option('blogname') === 'Ramazan Bozkurt Et Ürünleri') {
+        update_option('blogname', 'Ramazan Bozkurt Et ve Et Mamulleri');
+    }
+    if (!get_option('blogdescription') || get_option('blogdescription') === 'Just another WordPress site') {
+        update_option('blogdescription', 'Kayseri pastırması, sucuk, kavurma ve mantı | Perakende ve toptan satış');
+    }
+
+    $pages = [
+        'toptan-satis' => [
+            'Toptan Satış',
+            '<p>Ramazan Bozkurt Et ve Et Mamulleri; restoran, şarküteri, market, otel, kafe ve düzenli ürün tedariği yapan işletmelere pastırma, sucuk, kavurma ve mantıda toptan satış çözümleri sunar.</p><h2>İşletmenize özel teklif</h2><p>Sipariş miktarı, ürün grubu ve teslimat planına göre özel fiyatlandırma için bizimle iletişime geçebilirsiniz. Düzenli alımlarda tedarik planı ayrıca değerlendirilir.</p><h2>Nasıl ilerliyoruz?</h2><p>İhtiyacınızı, ürün grubunu ve yaklaşık sipariş miktarını paylaşın. Ekibimiz size uygun teklif ve sevkiyat planı için dönüş yapsın.</p>'
+        ],
+        'kargo-ve-teslimat' => [
+            'Kargo ve Teslimat',
+            '<p>Perakende siparişlerde 4.000 TL ve üzeri sepetlerde ücretsiz kargo avantajı uygulanır. Gönderim ve teslimat süreçleri ürünlerin niteliğine uygun biçimde planlanır.</p><h2>Teslimat bilgileri</h2><p>Siparişiniz hazırlanıp kargoya verildiğinde takip bilgileri, kullanılan altyapının desteklediği kanallar üzerinden paylaşılır. Toptan siparişlerde sevkiyat koşulları sipariş miktarına ve teslimat adresine göre ayrıca belirlenir.</p>'
+        ],
+        'sikca-sorulan-sorular' => [
+            'Sıkça Sorulan Sorular',
+            '<h2>Hangi ürünleri satıyorsunuz?</h2><p>Kayseri pastırması, sucuk, kavurma ve mantı ana ürün gruplarımızdır.</p><h2>Toptan satış yapıyor musunuz?</h2><p>Evet. İşletmelere ve düzenli alım yapan müşterilere sipariş miktarına göre özel teklif hazırlanır.</p><h2>Ücretsiz kargo limiti nedir?</h2><p>Perakende alışverişlerde 4.000 TL ve üzeri siparişlerde ücretsiz kargo avantajı sunulur.</p><h2>Ürün bilgilerini nereden görebilirim?</h2><p>Gramaj, fiyat ve mevcut satış seçenekleri her ürünün kendi sayfasında yer alır.</p>'
+        ],
+    ];
+
+    foreach ($pages as $slug => $data) {
+        if (!get_page_by_path($slug)) {
+            wp_insert_post([
+                'post_type' => 'page',
+                'post_status' => 'publish',
+                'post_title' => $data[0],
+                'post_name' => $slug,
+                'post_content' => $data[1],
+            ]);
+        }
+    }
+
+    if (class_exists('WooCommerce') && taxonomy_exists('product_cat')) {
+        $product_data = [
+            'kayseri-pastirmasi-250-g' => [
+                'name' => 'Kayseri Pastırması 250 g',
+                'price' => '710',
+                'cat' => 'pastirma',
+                'short' => 'Kayseri mutfak kültürünün simge ürünlerinden pastırma. 250 g paket seçeneğiyle perakende siparişe uygundur; toplu alımlar için özel teklif alınabilir.',
+                'content' => '<h2>Kayseri Pastırması 250 g</h2><p>Ramazan Bozkurt Et ve Et Mamulleri pastırma seçkisi, Kayseri pastırma geleneğini sofralara taşımak isteyen müşteriler için hazırlanır. İnce dilim servis, kahvaltı sofraları, sandviç ve sıcak yemek sunumlarında değerlendirilebilir.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 250 g</li><li>Ürün grubu: Pastırma</li><li>Perakende satışa uygundur</li><li>Toptan ve düzenli alımlar için özel fiyat teklifi alınabilir</li></ul><h3>Saklama ve servis</h3><p>Ürünün ambalajında belirtilen saklama koşullarına uyunuz. Açıldıktan sonra ürün etiketindeki tüketim ve muhafaza talimatlarını takip ediniz.</p>',
+                'images' => ['ramazan-bozkurt-kayseri-pastirmasi-premium-sunum','ramazan-bozkurt-kayseri-pastirmasi-dilimli-sunum','ramazan-bozkurt-pastirma-makro-detay'],
+            ],
+            'kayseri-sucugu-500-g' => [
+                'name' => 'Kayseri Sucuğu 500 g',
+                'price' => '680',
+                'cat' => 'sucuk',
+                'short' => 'Geleneksel Kayseri sucuk lezzetini 500 g paket seçeneğiyle keşfedin. Perakende siparişin yanında işletmelere özel toptan satış desteği sunulur.',
+                'content' => '<h2>Kayseri Sucuğu 500 g</h2><p>Kayseri sucuk kültürünü sofranıza taşıyan bu ürün; kahvaltı, tost, yumurta, ızgara ve sıcak yemeklerde kullanıma uygundur. Karakteristik sucuk deneyimini pratik 500 g paketle sunar.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 500 g</li><li>Ürün grubu: Sucuk</li><li>Perakende satışa uygundur</li><li>Restoran, market ve şarküterilere toptan teklif verilebilir</li></ul><h3>Saklama ve servis</h3><p>Ambalaj üzerinde yer alan muhafaza ve tüketim talimatlarını esas alınız. Pişirerek tüketiniz.</p>',
+                'images' => ['ramazan-bozkurt-kayseri-sucugu-premium-sunum','ramazan-bozkurt-kayseri-sucugu-urun-gorseli','ramazan-bozkurt-kayseri-parmak-sucuk'],
+            ],
+            'kayseri-kavurmasi-250-g' => [
+                'name' => 'Kayseri Kavurması 250 g',
+                'price' => '470',
+                'cat' => 'kavurma',
+                'short' => '250 g Kayseri kavurması; pratik servis ve yoğun et lezzeti arayan sofralar için. Toptan alımlarda işletmeye özel teklif seçeneği bulunur.',
+                'content' => '<h2>Kayseri Kavurması 250 g</h2><p>Kavurma, hızlı servis gerektiren öğünlerden geleneksel sofralara kadar geniş kullanım alanına sahip bir et ürünüdür. Ramazan Bozkurt Et ve Et Mamulleri kavurma seçkisi 250 g paket seçeneğiyle sunulur.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 250 g</li><li>Ürün grubu: Kavurma</li><li>Perakende satışa uygundur</li><li>Toplu siparişlerde özel teklif alınabilir</li></ul><h3>Saklama ve servis</h3><p>Ürün etiketindeki saklama, ısıtma ve son tüketim bilgilerini takip ediniz.</p>',
+                'images' => ['ramazan-bozkurt-kayseri-kavurma-premium-sunum','ramazan-bozkurt-kayseri-kavurma-urun-sunumu','ramazan-bozkurt-kavurma-kesit-detay'],
+            ],
+            'kayseri-mantisi-500-g' => [
+                'name' => 'Kayseri Mantısı 500 g',
+                'price' => '350',
+                'cat' => 'manti',
+                'short' => 'Kayseri mutfağının simge lezzetlerinden mantı, 500 g paket seçeneğiyle. Perakende sipariş ve işletmelere özel toplu alım seçenekleri bulunur.',
+                'content' => '<h2>Kayseri Mantısı 500 g</h2><p>Kayseri mantısı; yoğurt, sarımsak ve tercihe göre sos eşliğinde sunulan, şehrin en bilinen geleneksel lezzetlerinden biridir. 500 g paket, aile sofraları ve pratik hazırlık için uygun bir seçenektir.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 500 g</li><li>Ürün grubu: Mantı</li><li>Perakende satışa uygundur</li><li>Restoran ve işletme alımlarında toptan teklif alınabilir</li></ul><h3>Pişirme ve saklama</h3><p>Pişirme süresi ve saklama koşulları için ürün ambalajındaki talimatları takip ediniz.</p>',
+                'images' => ['ramazan-bozkurt-kayseri-mantisi-geleneksel','ramazan-bozkurt-kayseri-mantisi-paket','ramazan-bozkurt-kayseri-mantisi-el-yapimi'],
+            ],
+        ];
+
+        foreach ($product_data as $slug => $data) {
+            $existing = get_page_by_path($slug, OBJECT, 'product');
+            if ($existing) { continue; }
+            $product = new WC_Product_Simple();
+            $product->set_name($data['name']);
+            $product->set_slug($slug);
+            $product->set_status('publish');
+            $product->set_catalog_visibility('visible');
+            $product->set_regular_price($data['price']);
+            $product->set_price($data['price']);
+            $product->set_short_description($data['short']);
+            $product->set_description($data['content']);
+            $product->set_stock_status('instock');
+            $product->set_featured(true);
+
+            $term = get_term_by('slug', $data['cat'], 'product_cat');
+            if ($term && !is_wp_error($term)) { $product->set_category_ids([(int) $term->term_id]); }
+
+            $main_image = rb_media_id_first([$data['images'][0], $data['images'][1]]);
+            if ($main_image) { $product->set_image_id($main_image); }
+            $gallery = [];
+            foreach (array_slice($data['images'], 1) as $image_slug) {
+                $image_id = rb_media_id_first([$image_slug]);
+                if ($image_id && $image_id !== $main_image) { $gallery[] = $image_id; }
+            }
+            if ($gallery) { $product->set_gallery_image_ids($gallery); }
+            $product->save();
+        }
+    }
+
+    update_option('rb_site_seed_v3', 1);
+}
+add_action('admin_init', 'rb_seed_premium_demo_v3', 40);
 
 function rb_has_seo_plugin() { return defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('SEOPRESS_VERSION') || defined('AIOSEO_VERSION'); }
 
