@@ -43,9 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (header) {
-    const syncHeader = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 18);
-    };
+    const syncHeader = function () { header.classList.toggle('is-scrolled', window.scrollY > 18); };
     syncHeader();
     window.addEventListener('scroll', syncHeader, { passive: true });
   }
@@ -53,27 +51,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const scrollTopButton = document.querySelector('[data-scroll-top]');
   if (scrollTopButton) {
     let scrollHideTimer = null;
-
-    const hideScrollButton = function () {
-      scrollTopButton.classList.remove('is-visible');
-    };
-
+    const hideScrollButton = function () { scrollTopButton.classList.remove('is-visible'); };
     const showScrollButton = function () {
-      if (window.scrollY < 260) {
-        hideScrollButton();
-        return;
-      }
-
+      if (window.scrollY < 260) { hideScrollButton(); return; }
       scrollTopButton.classList.add('is-visible');
       window.clearTimeout(scrollHideTimer);
       scrollHideTimer = window.setTimeout(hideScrollButton, 900);
     };
-
     scrollTopButton.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       hideScrollButton();
     });
-
     window.addEventListener('scroll', showScrollButton, { passive: true });
     hideScrollButton();
   }
@@ -82,22 +70,56 @@ document.addEventListener('DOMContentLoaded', function () {
   if (cookieBanner) {
     const consent = localStorage.getItem('rb_cookie_consent');
     if (!consent) cookieBanner.hidden = false;
-
     const accept = cookieBanner.querySelector('[data-cookie-accept]');
     const reject = cookieBanner.querySelector('[data-cookie-reject]');
-
     if (accept) accept.addEventListener('click', function () {
-      localStorage.setItem('rb_cookie_consent', 'accepted');
-      cookieBanner.hidden = true;
+      localStorage.setItem('rb_cookie_consent', 'accepted'); cookieBanner.hidden = true;
       document.dispatchEvent(new CustomEvent('rbCookieConsent', { detail: 'accepted' }));
     });
-
     if (reject) reject.addEventListener('click', function () {
-      localStorage.setItem('rb_cookie_consent', 'rejected');
-      cookieBanner.hidden = true;
+      localStorage.setItem('rb_cookie_consent', 'rejected'); cookieBanner.hidden = true;
       document.dispatchEvent(new CustomEvent('rbCookieConsent', { detail: 'rejected' }));
     });
   }
+
+  /* Premium variation pills replace the unreliable native dropdown visually.
+     The original WooCommerce select stays in the DOM and receives the selected value. */
+  document.querySelectorAll('.single-product form.variations_form table.variations select').forEach(function (select) {
+    if (select.dataset.rbEnhanced === '1') return;
+    select.dataset.rbEnhanced = '1';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'rb-variation-pills';
+    wrap.setAttribute('role', 'group');
+    wrap.setAttribute('aria-label', 'Gramaj seçimi');
+
+    Array.from(select.options).forEach(function (option) {
+      if (!option.value) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'rb-variation-pill';
+      button.textContent = option.textContent.trim();
+      button.dataset.value = option.value;
+      if (option.disabled) button.disabled = true;
+      if (option.selected) button.classList.add('is-active');
+      button.addEventListener('click', function () {
+        select.value = button.dataset.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      wrap.appendChild(button);
+    });
+
+    select.insertAdjacentElement('afterend', wrap);
+    select.classList.add('rb-native-variation-select');
+
+    const sync = function () {
+      wrap.querySelectorAll('.rb-variation-pill').forEach(function (button) {
+        button.classList.toggle('is-active', button.dataset.value === select.value);
+      });
+    };
+    select.addEventListener('change', sync);
+    sync();
+  });
 
   const footerBottom = document.querySelector('.site-footer__bottom');
   if (footerBottom && !footerBottom.querySelector('.rb-agency-credit')) {
@@ -107,13 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
     credit.style.cssText = 'color:#766b62;font-size:10px;letter-spacing:.04em;text-align:center;white-space:nowrap;';
     const link = credit.querySelector('a');
     if (link) link.style.cssText = 'display:inline;color:#bda46f;font-weight:800;letter-spacing:.08em;text-transform:uppercase;';
-
     const location = footerBottom.lastElementChild;
-    if (location) {
-      footerBottom.insertBefore(credit, location);
-    } else {
-      footerBottom.appendChild(credit);
-    }
+    if (location) footerBottom.insertBefore(credit, location); else footerBottom.appendChild(credit);
   }
 
   if (!document.getElementById('rb-footer-balance-fix')) {
