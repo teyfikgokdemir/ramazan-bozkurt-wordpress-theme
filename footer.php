@@ -13,7 +13,7 @@ if (file_exists($legal_setup)) {
     <div class="site-footer__brand">
       <strong><?php bloginfo('name'); ?></strong>
       <p>Kayseri’nin geleneksel pastırma, sucuk, kavurma ve mantı lezzetlerini perakende ve toptan satışla buluşturuyoruz.</p>
-      <p class="rb-footer-company">Ramazan Bozkurt<br>Süleymanlı Mah. 6952. Sk. No: 47 Talas / Kayseri<br>Erciyes Vergi Dairesi · VKN 1850818784</p>
+      <p class="rb-footer-company">Ramazan Bozkurt<br>Süleymanlı Mah. 6952. Sk. No: 47 Talas / Kayseri<br>Erciyes Vergi Dairesi · VKN 1850818784<br><a href="tel:+905398248295">+90 539 824 82 95</a></p>
     </div>
     <div>
       <h2>Blog</h2>
@@ -37,6 +37,8 @@ if (file_exists($legal_setup)) {
       <?php endif; ?>
       <a href="<?php echo esc_url(home_url('/toptan-satis')); ?>">Toptan Satış</a>
       <a href="<?php echo esc_url(home_url('/iletisim')); ?>">İletişim</a>
+      <a href="tel:+905398248295">Telefon: +90 539 824 82 95</a>
+      <a href="https://wa.me/905398248295" target="_blank" rel="noopener noreferrer">WhatsApp</a>
     </div>
   </div>
   <div class="rb-container site-footer__bottom">
@@ -45,7 +47,7 @@ if (file_exists($legal_setup)) {
   </div>
 </footer>
 
-<a class="rb-whatsapp" href="https://wa.me/905555555555" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile iletişime geç">
+<a class="rb-whatsapp" href="https://wa.me/905398248295" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 539 824 82 95 numarasından iletişime geç">
   <span aria-hidden="true">✆</span><strong>WhatsApp</strong>
 </a>
 
@@ -63,7 +65,7 @@ if (file_exists($legal_setup)) {
 </div>
 
 <style>
-.rb-footer-company{font-size:12px;line-height:1.7;color:#a89788;margin-top:18px}.rb-whatsapp{position:fixed;left:22px;bottom:22px;z-index:1400;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1px solid var(--rb-border-strong);border-radius:999px;background:#17100d;color:var(--rb-gold-soft);box-shadow:0 18px 45px rgba(0,0,0,.35);font-size:13px}.rb-whatsapp:hover{background:#211711}.rb-cookie{position:fixed;left:20px;right:20px;bottom:20px;z-index:2000}.rb-cookie__inner{width:min(100%,980px);margin:auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:26px;border:1px solid var(--rb-border-strong);border-radius:20px;background:rgba(18,13,10,.98);box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(16px)}.rb-cookie strong{color:var(--rb-cream);font-size:16px}.rb-cookie p{margin:5px 0 0;color:var(--rb-muted);font-size:13px;max-width:680px}.rb-cookie p a{color:var(--rb-gold-soft);text-decoration:underline}.rb-cookie__actions{display:flex;gap:10px;flex:0 0 auto}@media(max-width:700px){.rb-cookie{left:12px;right:12px;bottom:12px}.rb-cookie__inner{display:grid;padding:18px}.rb-cookie__actions{width:100%}.rb-cookie__actions .rb-btn{flex:1}.rb-whatsapp{left:14px;bottom:14px}.site-footer__grid{grid-template-columns:1fr}}
+.rb-footer-company{font-size:12px;line-height:1.7;color:#a89788;margin-top:18px}.rb-footer-company a{display:inline!important;color:var(--rb-gold-soft)}.rb-whatsapp{position:fixed;left:22px;bottom:22px;z-index:1400;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1px solid var(--rb-border-strong);border-radius:999px;background:#17100d;color:var(--rb-gold-soft);box-shadow:0 18px 45px rgba(0,0,0,.35);font-size:13px}.rb-whatsapp:hover{background:#211711}.rb-cookie{position:fixed;left:20px;right:20px;bottom:20px;z-index:2000}.rb-cookie__inner{width:min(100%,980px);margin:auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:26px;border:1px solid var(--rb-border-strong);border-radius:20px;background:rgba(18,13,10,.98);box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(16px)}.rb-cookie strong{color:var(--rb-cream);font-size:16px}.rb-cookie p{margin:5px 0 0;color:var(--rb-muted);font-size:13px;max-width:680px}.rb-cookie p a{color:var(--rb-gold-soft);text-decoration:underline}.rb-cookie__actions{display:flex;gap:10px;flex:0 0 auto}@media(max-width:700px){.rb-cookie{left:12px;right:12px;bottom:12px}.rb-cookie__inner{display:grid;padding:18px}.rb-cookie__actions{width:100%}.rb-cookie__actions .rb-btn{flex:1}.rb-whatsapp{left:14px;bottom:14px}.site-footer__grid{grid-template-columns:1fr}}
 </style>
 
 <?php wp_footer(); ?>
