@@ -1,19 +1,20 @@
 <?php
 get_header();
 
-if (have_posts()) {
-    while (have_posts()) {
-        the_post();
-        $content = trim((string) get_post_field('post_content', get_the_ID()));
-        if ($content !== '') {
-            echo '<div class="rb-editable-home">';
+// Yalnızca gerçekten statik ana sayfa seçilmişse ve içerik girilmişse blok editörü içeriğini göster.
+// Böylece WordPress'in varsayılan blog yazısı ana sayfanın yerine geçmez.
+if (is_page() && (int) get_option('page_on_front') === (int) get_queried_object_id()) {
+    $content = trim((string) get_post_field('post_content', get_queried_object_id()));
+    if ($content !== '') {
+        echo '<div class="rb-editable-home">';
+        while (have_posts()) {
+            the_post();
             the_content();
-            echo '</div>';
-            get_footer();
-            return;
         }
+        echo '</div>';
+        get_footer();
+        return;
     }
-    rewind_posts();
 }
 
 $hero = rb_media_first(['ramazan-bozkurt-kayseri-aile-sofrasi-banner','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']);
@@ -24,7 +25,7 @@ $products = [
   ['title'=>'Mantı','slug'=>'manti','text'=>'Kayseri mutfağının simge lezzetlerinden mantıyı ve farklı paket seçeneklerini keşfedin.','image'=>rb_media_first(['ramazan-bozkurt-kayseri-mantisi-geleneksel','ramazan-bozkurt-kayseri-mantisi-paket'])],
 ];
 $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler');
-$wholesale_url = add_query_arg('talep', 'toptan', home_url('/iletisim'));
+$wholesale_url = home_url('/toptan-satis');
 ?>
 <section class="rb-hero<?php echo $hero ? ' has-media' : ''; ?>" aria-label="Ramazan Bozkurt Et ve Et Mamulleri">
   <?php if ($hero) : ?><div class="rb-hero__media"><img src="<?php echo esc_url($hero); ?>" alt="Ramazan Bozkurt Et ve Et Mamulleri Kayseri aile sofrası, pastırma, sucuk, kavurma ve mantı" fetchpriority="high"></div><?php endif; ?>
