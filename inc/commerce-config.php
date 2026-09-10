@@ -4,8 +4,11 @@
  */
 defined('ABSPATH') || exit;
 
-function rb_free_shipping_threshold() { return 4000.0; }
-function rb_standard_shipping_cost() { return 180.0; }
+$rb_theme_settings_file = get_template_directory() . '/inc/theme-settings.php';
+if (file_exists($rb_theme_settings_file)) { require_once $rb_theme_settings_file; }
+
+function rb_free_shipping_threshold() { return (float) (function_exists('rb_theme_setting') ? rb_theme_setting('free_shipping_threshold', 4000) : 4000); }
+function rb_standard_shipping_cost() { return (float) (function_exists('rb_theme_setting') ? rb_theme_setting('shipping_cost', 180) : 180); }
 
 function rb_cart_merchandise_subtotal() {
     if (!function_exists('WC') || !WC()->cart) { return 0.0; }
@@ -29,7 +32,8 @@ add_filter('woocommerce_package_rates', 'rb_adjust_shipping_rates', 100, 2);
 
 function rb_free_shipping_checkout_notice() {
     if (!function_exists('WC') || !WC()->cart || WC()->cart->is_empty()) { return; }
-    echo '<div class="rb-shipping-progress rb-shipping-progress--simple" role="status"><div class="rb-shipping-progress__copy"><strong>4.000 TL ve üzeri ücretsiz kargo</strong></div></div>';
+    $threshold = rb_free_shipping_threshold();
+    echo '<div class="rb-shipping-progress rb-shipping-progress--simple" role="status"><div class="rb-shipping-progress__copy"><strong>' . esc_html(wc_price($threshold, ['decimals'=>0])) . ' ve üzeri ücretsiz kargo</strong></div></div>';
 }
 add_action('woocommerce_before_checkout_form', 'rb_free_shipping_checkout_notice', 7);
 
@@ -93,7 +97,6 @@ function rb_owner_kavurma_v1() {
 }
 add_action('admin_init', 'rb_owner_kavurma_v1', 170);
 
-/* Fresh migration key so earlier one-time flags cannot block the owner-approved catalog. */
 function rb_owner_catalog_force_v3() {
     if (!class_exists('WooCommerce')) { return; }
 
