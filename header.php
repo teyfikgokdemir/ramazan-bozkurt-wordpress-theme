@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/visual-effects.css?v=' . wp_get_theme()->get('Version')); ?>">
   <script defer src="<?php echo esc_url(get_template_directory_uri() . '/assets/js/cart-progress.js?v=' . wp_get_theme()->get('Version')); ?>"></script>
 </head>
 <body <?php body_class(); ?>>
