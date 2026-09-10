@@ -3,7 +3,7 @@ Theme Name: Ramazan Bozkurt
 Theme URI: https://github.com/teyfikgokdemir/ramazan-bozkurt-wordpress-theme
 Author: Ramazan Bozkurt
 Description: Ramazan Bozkurt Et Ürünleri için özel, modern ve mobil uyumlu WordPress teması.
-Version: 1.2.0
+Version: 1.2.1
 Text Domain: ramazan-bozkurt
 */
 
@@ -38,15 +38,15 @@ img{max-width:100%;height:auto;display:block}
 .site-menu-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer}
 .site-menu-toggle span{display:block;width:26px;height:2px;background:var(--rb-cream);margin:5px 0}
 
-.rb-hero{position:relative;min-height:72vh;display:flex;align-items:center;overflow:hidden;background:radial-gradient(circle at 65% 30%,#2b1d15 0,#130e0b 60%)}
+.rb-hero{position:relative;min-height:72vh;display:flex;align-items:flex-end;overflow:hidden;background:radial-gradient(circle at 65% 30%,#2b1d15 0,#130e0b 60%)}
 .rb-hero__media{position:absolute;inset:0}
 .rb-hero__media img{width:100%;height:100%;object-fit:cover;object-position:center}
-.rb-hero__overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,8,5,.86) 0%,rgba(13,8,5,.68) 34%,rgba(13,8,5,.28) 58%,rgba(13,8,5,.12) 100%)}
-.rb-hero__content{position:relative;z-index:2;max-width:610px;padding:96px 0 104px}
+.rb-hero__overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,8,5,.06) 0%,rgba(13,8,5,.16) 44%,rgba(13,8,5,.72) 100%)}
+.rb-hero__content{position:relative;z-index:2;max-width:610px;padding:0 0 58px}
 .rb-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--rb-gold);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.17em;margin-bottom:18px}
 .rb-hero h1,.rb-section h2,.rb-story h2,.rb-cta h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.035em}
 .rb-hero h1{font-size:clamp(42px,4.6vw,68px);line-height:1.01;margin:0 0 22px;max-width:600px}
-.rb-hero p{font-size:clamp(17px,1.6vw,20px);color:#e4d9cf;max-width:560px;margin:0 0 30px}
+.rb-hero p{font-size:clamp(17px,1.6vw,20px);color:#f1e8de;max-width:560px;margin:0 0 22px;text-shadow:0 2px 12px rgba(0,0,0,.38)}
 .rb-actions{display:flex;flex-wrap:wrap;gap:14px}
 .rb-btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:999px;font-weight:800;border:1px solid var(--rb-gold);transition:.2s ease}
 .rb-btn--primary{background:var(--rb-gold);color:#17100c}
@@ -95,7 +95,7 @@ img{max-width:100%;height:auto;display:block}
   .rb-section__head--split,.rb-story__inner{grid-template-columns:1fr;gap:34px}
   .rb-story__copy{max-width:720px}
   .rb-hero{min-height:68vh}
-  .rb-hero__content{max-width:560px}
+  .rb-hero__content{max-width:560px;padding-bottom:48px}
 }
 @media (max-width:640px){
   .rb-container{width:min(calc(100% - 28px),var(--rb-max))}
@@ -103,13 +103,14 @@ img{max-width:100%;height:auto;display:block}
   .site-brand img{max-height:50px}
   .site-nav{top:68px;left:14px;right:14px}
   .rb-hero{min-height:70vh;align-items:flex-end}
-  .rb-hero__content{padding:96px 0 54px;max-width:100%}
+  .rb-hero__content{padding:0 0 34px;max-width:100%}
   .rb-hero h1{font-size:clamp(38px,10.5vw,52px);max-width:11ch}
-  .rb-hero p{font-size:17px;max-width:30ch}
-  .rb-hero__overlay{background:linear-gradient(180deg,rgba(13,8,5,.12) 0%,rgba(13,8,5,.48) 35%,rgba(13,8,5,.94) 100%)}
+  .rb-hero p{font-size:16px;max-width:30ch;margin-bottom:16px}
+  .rb-hero__overlay{background:linear-gradient(180deg,rgba(13,8,5,.03) 0%,rgba(13,8,5,.12) 42%,rgba(13,8,5,.80) 100%)}
   .rb-grid{grid-template-columns:1fr}
   .rb-section,.rb-story{padding:72px 0}
-  .rb-actions{flex-direction:column;align-items:stretch}
+  .rb-actions{flex-direction:row;align-items:center}
+  .rb-btn{min-height:46px;padding:0 18px}
   .rb-cta__inner{align-items:flex-start;flex-direction:column}
   .rb-story__visual,.rb-story__visual img{min-height:300px}
 }
