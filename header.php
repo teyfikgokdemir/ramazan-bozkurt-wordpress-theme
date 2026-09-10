@@ -24,11 +24,22 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <?php
+$content_hub = get_template_directory() . '/inc/content-hub.php';
+if (file_exists($content_hub)) {
+    require_once $content_hub;
+    if (function_exists('rb_seed_content_hub_v1') && !get_option('rb_content_hub_v1')) {
+        rb_seed_content_hub_v1();
+    }
+}
+
 $nav_setup = get_template_directory() . '/inc/navigation-setup.php';
 if (file_exists($nav_setup)) {
     require_once $nav_setup;
     if (function_exists('rb_navigation_setup_v1') && !get_option('rb_navigation_setup_v1')) {
         rb_navigation_setup_v1();
+    }
+    if (function_exists('rb_navigation_content_hub_v2') && !get_option('rb_navigation_content_hub_v2')) {
+        rb_navigation_content_hub_v2();
     }
 }
 
