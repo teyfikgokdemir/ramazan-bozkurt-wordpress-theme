@@ -1,5 +1,23 @@
 <?php
 get_header();
+
+// Teslim sonrası ana sayfa tamamen WordPress blok editöründen yönetilebilsin.
+// Ana sayfa içeriği varsa onu gösterir; içerik boşsa premium varsayılan tasarım devreye girer.
+if (have_posts()) {
+    while (have_posts()) {
+        the_post();
+        $content = trim((string) get_post_field('post_content', get_the_ID()));
+        if ($content !== '') {
+            echo '<div class="rb-editable-home">';
+            the_content();
+            echo '</div>';
+            get_footer();
+            return;
+        }
+    }
+    rewind_posts();
+}
+
 $hero = rb_media_first(['ramazan-bozkurt-kayseri-aile-sofrasi-banner','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']);
 $products = [
   [
