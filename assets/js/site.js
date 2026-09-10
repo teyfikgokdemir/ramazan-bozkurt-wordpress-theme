@@ -115,4 +115,19 @@ document.addEventListener('DOMContentLoaded', function () {
       footerBottom.appendChild(credit);
     }
   }
+
+  if (!document.getElementById('rb-footer-balance-fix')) {
+    const footerStyle = document.createElement('style');
+    footerStyle.id = 'rb-footer-balance-fix';
+    footerStyle.textContent = [
+      '.site-footer{padding-bottom:0!important}',
+      '.rb-payment-strip{margin-bottom:0!important}',
+      '.site-footer__bottom{margin-top:0!important;padding-top:22px!important;padding-bottom:22px!important;border-top:0!important;display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:center!important;gap:24px!important}',
+      '.site-footer__bottom>span:first-child{text-align:left!important}',
+      '.site-footer__bottom>span:last-child{text-align:right!important}',
+      '.rb-agency-credit{justify-self:center!important}',
+      '@media(max-width:700px){.site-footer__bottom{grid-template-columns:1fr!important;gap:10px!important;text-align:center!important;padding-top:18px!important;padding-bottom:18px!important}.site-footer__bottom>span:first-child,.site-footer__bottom>span:last-child{text-align:center!important}.rb-agency-credit{justify-self:center!important}}'
+    ].join('');
+    document.head.appendChild(footerStyle);
+  }
 });
