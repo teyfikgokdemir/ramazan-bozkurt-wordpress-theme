@@ -34,17 +34,25 @@ add_filter('woocommerce_product_tabs','rb_replace_description_tab_callback',30);
 function rb_other_products_section() {
     if (!is_product()) { return; }
     global $product; if (!$product) { return; }
-    $query = new WP_Query(['post_type'=>'product','post_status'=>'publish','posts_per_page'=>3,'post__not_in'=>[$product->get_id()],'orderby'=>'menu_order title','order'=>'ASC']);
+    $query = new WP_Query([
+        'post_type'=>'product','post_status'=>'publish','posts_per_page'=>4,
+        'post__not_in'=>[$product->get_id()],'orderby'=>'menu_order title','order'=>'ASC'
+    ]);
     if (!$query->have_posts()) { return; }
     echo '<section class="rb-other-products"><div class="rb-other-products__head"><div><span class="rb-eyebrow">Sofranızı tamamlayın</span><h2>Diğer lezzetleri keşfedin</h2></div><a class="rb-text-link" href="'.esc_url(wc_get_page_permalink('shop')).'">Tüm ürünler →</a></div>';
-    woocommerce_product_loop_start(); while($query->have_posts()){ $query->the_post(); wc_get_template_part('content','product'); } woocommerce_product_loop_end();
-    echo '</section>'; wp_reset_postdata();
+    woocommerce_product_loop_start();
+    while($query->have_posts()){ $query->the_post(); wc_get_template_part('content','product'); }
+    woocommerce_product_loop_end();
+    echo '</section>';
+    wp_reset_postdata();
 }
 remove_action('woocommerce_after_single_product_summary','woocommerce_output_related_products',20);
 add_action('woocommerce_after_single_product_summary','rb_other_products_section',28);
 
 function rb_product_shipping_note() {
     if (!is_product()) { return; }
-    echo '<div class="rb-product-shipping-note"><strong>4.000 TL ve üzeri ücretsiz kargo</strong></div>';
+    $threshold = function_exists('rb_free_shipping_threshold') ? rb_free_shipping_threshold() : 4000;
+    $label = function_exists('wc_price') ? wp_strip_all_tags(wc_price($threshold, ['decimals'=>0])) : number_format_i18n($threshold, 0) . ' TL';
+    echo '<div class="rb-product-shipping-note"><strong>' . esc_html($label) . ' ve üzeri ücretsiz kargo</strong></div>';
 }
 add_action('woocommerce_single_product_summary','rb_product_shipping_note',31);
