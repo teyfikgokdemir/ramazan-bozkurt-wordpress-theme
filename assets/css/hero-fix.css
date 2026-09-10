@@ -1,12 +1,12 @@
 .rb-hero{min-height:clamp(720px,84vh,900px)}
-.rb-hero__media img{object-position:center top}
+.rb-hero__media img{object-position:center 68%}
 .rb-hero__content{padding-bottom:38px}
 @media (max-width:980px){
   .rb-hero{min-height:76vh}
-  .rb-hero__media img{object-position:center top}
+  .rb-hero__media img{object-position:center 64%}
 }
 @media (max-width:640px){
   .rb-hero{min-height:72vh}
-  .rb-hero__media img{object-position:center center}
+  .rb-hero__media img{object-position:center 58%}
   .rb-hero__content{padding-bottom:24px}
 }
