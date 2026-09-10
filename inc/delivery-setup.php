@@ -5,6 +5,8 @@
  */
 defined('ABSPATH') || exit;
 
+require_once get_template_directory() . '/inc/commerce-config.php';
+
 function rb_find_attachment_id_by_slug($slug) {
     $attachment = get_page_by_path(sanitize_title($slug), OBJECT, 'attachment');
     if ($attachment) { return (int) $attachment->ID; }
@@ -53,8 +55,8 @@ function rb_delivery_setup_v4() {
     $home_id = rb_ensure_page('ana-sayfa', 'Ana Sayfa', '');
     $about_id = rb_ensure_page('hakkimizda', 'Hakkımızda', '<p>Ramazan Bozkurt Et ve Et Mamulleri; Kayseri’nin pastırma, sucuk, kavurma ve mantı geleneğini çağdaş satış ve sunum anlayışıyla buluşturur.</p>');
     $wholesale_id = rb_ensure_page('toptan-satis', 'Toptan Satış', '<h2>İşletmelere özel toptan satış</h2><p>Restoran, şarküteri, market, otel, kafe ve düzenli alım yapan işletmeler için pastırma, sucuk, kavurma ve mantıda toplu sipariş talepleri alınır.</p><p>Sipariş miktarı, ürün seçimi ve teslimat planına göre işletmenize özel teklif için bizimle iletişime geçebilirsiniz.</p>');
-    $shipping_id = rb_ensure_page('kargo-ve-teslimat', 'Kargo ve Teslimat', '<h2>Kargo ve teslimat</h2><p>4.000 TL altındaki perakende siparişlerde 180 TL kargo ücreti uygulanır. 4.000 TL ve üzeri perakende siparişlerde kargo ücretsizdir.</p><p>Toptan siparişlerde sevkiyat koşulları sipariş miktarı ve teslimat planına göre ayrıca belirlenir.</p>');
-    $faq_id = rb_ensure_page('sikca-sorulan-sorular', 'Sıkça Sorulan Sorular', '<h2>Sipariş ve ürünler hakkında sık sorulan sorular</h2><h3>Hangi ürünler satılıyor?</h3><p>Pastırma, sucuk, kavurma ve Kayseri mantısı ürünleri satışa sunulur.</p><h3>Toptan sipariş verebilir miyim?</h3><p>Evet. İşletmeler için toplu sipariş ve düzenli alım talepleri ayrıca değerlendirilir.</p><h3>Kargo ücreti nedir?</h3><p>4.000 TL altındaki perakende siparişlerde 180 TL kargo ücreti uygulanır. 4.000 TL ve üzerindeki siparişlerde kargo ücretsizdir.</p>');
+    $shipping_id = rb_ensure_page('kargo-ve-teslimat', 'Kargo ve Teslimat', '<h2>Kargo ve teslimat</h2><p>4.000 TL ve üzeri perakende siparişlerde ücretsiz kargo uygulanır. 4.000 TL altındaki perakende siparişlerde 180 TL kargo ücreti uygulanır.</p><p>Toptan siparişlerde sevkiyat koşulları sipariş miktarı ve teslimat planına göre ayrıca belirlenir.</p>');
+    $faq_id = rb_ensure_page('sikca-sorulan-sorular', 'Sıkça Sorulan Sorular', '<h2>Sipariş ve ürünler hakkında sık sorulan sorular</h2><h3>Hangi ürünler satılıyor?</h3><p>Pastırma, sucuk, kavurma ve Kayseri mantısı ürünleri satışa sunulur.</p><h3>Hangi gramajlar var?</h3><p>Ana ürünlerde 250 g, 500 g ve 1 kg gramaj seçenekleri bulunur.</p><h3>Toptan sipariş verebilir miyim?</h3><p>Evet. İşletmeler için toplu sipariş ve düzenli alım talepleri ayrıca değerlendirilir.</p><h3>Ücretsiz kargo sınırı nedir?</h3><p>4.000 TL ve üzeri perakende siparişlerde ücretsiz kargo uygulanır. Altındaki siparişlerde 180 TL kargo ücreti uygulanır.</p>');
     $contact_id = rb_ensure_page('iletisim', 'İletişim', '<h2>Satış ve iş birliği için iletişim</h2><p>Perakende siparişler, toptan satış talepleri, ürün bilgisi ve iş birliği konularında Ramazan Bozkurt Et ve Et Mamulleri ile iletişime geçebilirsiniz.</p>');
 
     if ($home_id) {
@@ -144,46 +146,3 @@ function rb_delivery_setup_v4() {
     update_option('rb_delivery_setup_v4', 1);
 }
 add_action('admin_init', 'rb_delivery_setup_v4', 80);
-
-/**
- * Shipping rule: 180 TL below 4,000 TL; free shipping from 4,000 TL.
- * Replaces conflicting standard rates with one clear customer-facing option.
- */
-function rb_shipping_rates($rates, $package) {
-    if (!class_exists('WooCommerce') || !WC()->cart) { return $rates; }
-
-    $subtotal = (float) WC()->cart->get_displayed_subtotal();
-    $is_free = $subtotal >= 4000;
-
-    $new_rate = new WC_Shipping_Rate(
-        'rb_shipping',
-        $is_free ? 'Ücretsiz Kargo' : 'Kargo',
-        $is_free ? 0 : 180,
-        [],
-        'rb_shipping'
-    );
-
-    return ['rb_shipping' => $new_rate];
-}
-add_filter('woocommerce_package_rates', 'rb_shipping_rates', 999, 2);
-
-/** Turkish storefront text fallback for untranslated WooCommerce strings. */
-function rb_storefront_translations($translated, $text, $domain) {
-    $map = [
-        'Free shipping'   => 'Ücretsiz Kargo',
-        'Shipping'        => 'Kargo',
-        'Cart totals'     => 'Sepet Toplamları',
-        'Proceed to checkout' => 'Ödemeye Geç',
-        'Estimated total' => 'Tahmini Toplam',
-        'Subtotal'        => 'Ara Toplam',
-        'Apply coupon'    => 'Kuponu Uygula',
-        'Coupon code'     => 'Kupon Kodu',
-        'Update cart'     => 'Sepeti Güncelle',
-        'Remove item'     => 'Ürünü Kaldır',
-        'View cart'       => 'Sepeti Görüntüle',
-        'Checkout'        => 'Ödeme',
-    ];
-
-    return isset($map[$text]) ? $map[$text] : $translated;
-}
-add_filter('gettext', 'rb_storefront_translations', 20, 3);
