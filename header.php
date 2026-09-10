@@ -29,6 +29,14 @@ if (file_exists($nav_setup)) {
         rb_navigation_setup_v1();
     }
 }
+
+$cemensiz_setup = get_template_directory() . '/inc/cemensiz-image.php';
+if (file_exists($cemensiz_setup)) {
+    require_once $cemensiz_setup;
+    if (function_exists('rb_assign_cemensiz_product_image_v1') && !get_option('rb_cemensiz_product_image_v1')) {
+        rb_assign_cemensiz_product_image_v1();
+    }
+}
 ?>
 <header class="site-header" data-site-header>
   <div class="rb-container site-header__inner">
