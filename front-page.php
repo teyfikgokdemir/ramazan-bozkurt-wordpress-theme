@@ -30,8 +30,6 @@ $products = [
   <?php endif; ?>
   <div class="rb-hero__overlay"></div>
   <div class="rb-container rb-hero__content">
-    <div class="rb-eyebrow">Kayseri • Geleneksel Üretim</div>
-    <h1>Kayseri’nin Geleneksel Lezzetleri Sofralarınızda</h1>
     <p>Pastırma, sucuk, kavurma ve mantıda seçkin ürünler. Perakende ve toptan satış.</p>
     <div class="rb-actions">
       <a class="rb-btn rb-btn--primary" href="#urunler">Ürünleri İncele</a>
