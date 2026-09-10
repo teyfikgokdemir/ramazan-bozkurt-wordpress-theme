@@ -5,6 +5,9 @@
  */
 defined('ABSPATH') || exit;
 
+$content_hub = get_template_directory() . '/inc/content-hub.php';
+if (file_exists($content_hub)) { require_once $content_hub; }
+
 function rb_navigation_setup_v1() {
     if (get_option('rb_navigation_setup_v1')) { return; }
 
