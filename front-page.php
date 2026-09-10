@@ -1,6 +1,6 @@
 <?php
 get_header();
-$hero = rb_media('ramazan-bozkurt-kayseri-geleneksel-lezzet-banner');
+$hero = rb_media('ramazan-bozkurt-kayseri-aile-sofrasi-banner');
 $products = [
   [
     'title' => 'Pastırma',
@@ -26,7 +26,7 @@ $products = [
 ?>
 <section class="rb-hero<?php echo $hero ? ' has-media' : ''; ?>">
   <?php if ($hero) : ?>
-    <div class="rb-hero__media"><img src="<?php echo esc_url($hero); ?>" alt="Ramazan Bozkurt Et Ürünleri Kayseri geleneksel lezzetleri"></div>
+    <div class="rb-hero__media"><img src="<?php echo esc_url($hero); ?>" alt="Ramazan Bozkurt Et Ürünleri Kayseri aile sofrası ve geleneksel lezzetler"></div>
   <?php endif; ?>
   <div class="rb-hero__overlay"></div>
   <div class="rb-container rb-hero__content">
