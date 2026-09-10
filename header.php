@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/home-compact.css?v=' . wp_get_theme()->get('Version')); ?>">
   <?php $rb_blog_css = get_template_directory() . '/assets/css/blog.css'; $rb_blog_ver = file_exists($rb_blog_css) ? filemtime($rb_blog_css) : wp_get_theme()->get('Version'); ?>
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/blog.css?v=' . $rb_blog_ver); ?>">
+  <?php $rb_blog_detail_css = get_template_directory() . '/assets/css/blog-detail-fix.css'; $rb_blog_detail_ver = file_exists($rb_blog_detail_css) ? filemtime($rb_blog_detail_css) : wp_get_theme()->get('Version'); ?>
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/blog-detail-fix.css?v=' . $rb_blog_detail_ver); ?>">
   <script defer src="<?php echo esc_url(get_template_directory_uri() . '/assets/js/cart-progress.js?v=' . wp_get_theme()->get('Version')); ?>"></script>
 </head>
 <body <?php body_class(); ?>>
