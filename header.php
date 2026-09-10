@@ -6,6 +6,8 @@
   <?php wp_head(); ?>
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <script defer src="<?php echo esc_url(get_template_directory_uri() . '/assets/js/cart-progress.js?v=' . wp_get_theme()->get('Version')); ?>"></script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -44,7 +46,7 @@
         echo '<a href="'.esc_url(home_url('/')).'">Ana Sayfa</a>';
         echo '<a href="'.esc_url($shop_url).'">Ürünler</a>';
         echo '<a href="'.esc_url(home_url('/hakkimizda')).'">Hakkımızda</a>';
-        echo '<a href="'.esc_url(add_query_arg('talep','toptan',home_url('/iletisim'))).'">Toptan Satış</a>';
+        echo '<a href="'.esc_url(home_url('/toptan-satis')).'">Toptan Satış</a>';
         echo '<a href="'.esc_url(home_url('/iletisim')).'">İletişim</a>';
       }
       ?>
