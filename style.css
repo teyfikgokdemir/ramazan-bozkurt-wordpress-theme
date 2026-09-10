@@ -3,7 +3,7 @@ Theme Name: Ramazan Bozkurt
 Theme URI: https://github.com/teyfikgokdemir/ramazan-bozkurt-wordpress-theme
 Author: Ramazan Bozkurt
 Description: Ramazan Bozkurt Et Ürünleri için özel, modern ve mobil uyumlu WordPress teması.
-Version: 1.1.0
+Version: 1.2.0
 Text Domain: ramazan-bozkurt
 */
 
@@ -26,10 +26,10 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;height:auto;display:block}
 .rb-container{width:min(calc(100% - 40px),var(--rb-max));margin-inline:auto}
 
-.site-header{position:sticky;top:0;z-index:1000;background:rgba(18,13,10,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--rb-border)}
-.site-header__inner{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.site-header{position:sticky;top:0;z-index:1000;background:rgba(18,13,10,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--rb-border)}
+.site-header__inner{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .site-brand{display:flex;align-items:center;font-weight:800;letter-spacing:.02em}
-.site-brand img{width:auto;max-height:64px}
+.site-brand img{width:auto;max-height:58px}
 .site-nav{display:flex;gap:28px;align-items:center;font-size:14px;font-weight:700}
 .site-nav a{position:relative}
 .site-nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:1px;background:var(--rb-gold);transition:.2s ease}
@@ -38,17 +38,17 @@ img{max-width:100%;height:auto;display:block}
 .site-menu-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer}
 .site-menu-toggle span{display:block;width:26px;height:2px;background:var(--rb-cream);margin:5px 0}
 
-.rb-hero{position:relative;min-height:82vh;display:flex;align-items:center;overflow:hidden;background:radial-gradient(circle at 65% 30%,#2b1d15 0,#130e0b 60%)}
+.rb-hero{position:relative;min-height:72vh;display:flex;align-items:center;overflow:hidden;background:radial-gradient(circle at 65% 30%,#2b1d15 0,#130e0b 60%)}
 .rb-hero__media{position:absolute;inset:0}
-.rb-hero__media img{width:100%;height:100%;object-fit:cover}
-.rb-hero__overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,8,5,.90) 0%,rgba(13,8,5,.66) 38%,rgba(13,8,5,.20) 70%,rgba(13,8,5,.30) 100%)}
-.rb-hero__content{position:relative;z-index:2;max-width:760px;padding:120px 0}
+.rb-hero__media img{width:100%;height:100%;object-fit:cover;object-position:center}
+.rb-hero__overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,8,5,.86) 0%,rgba(13,8,5,.68) 34%,rgba(13,8,5,.28) 58%,rgba(13,8,5,.12) 100%)}
+.rb-hero__content{position:relative;z-index:2;max-width:610px;padding:96px 0 104px}
 .rb-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--rb-gold);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.17em;margin-bottom:18px}
 .rb-hero h1,.rb-section h2,.rb-story h2,.rb-cta h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.035em}
-.rb-hero h1{font-size:clamp(46px,6vw,86px);line-height:.98;margin:0 0 24px}
-.rb-hero p{font-size:clamp(18px,2vw,21px);color:#e4d9cf;max-width:620px;margin:0 0 34px}
+.rb-hero h1{font-size:clamp(42px,4.6vw,68px);line-height:1.01;margin:0 0 22px;max-width:600px}
+.rb-hero p{font-size:clamp(17px,1.6vw,20px);color:#e4d9cf;max-width:560px;margin:0 0 30px}
 .rb-actions{display:flex;flex-wrap:wrap;gap:14px}
-.rb-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 25px;border-radius:999px;font-weight:800;border:1px solid var(--rb-gold);transition:.2s ease}
+.rb-btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:999px;font-weight:800;border:1px solid var(--rb-gold);transition:.2s ease}
 .rb-btn--primary{background:var(--rb-gold);color:#17100c}
 .rb-btn--primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
 .rb-btn--ghost:hover{background:rgba(203,166,94,.12)}
@@ -94,17 +94,19 @@ img{max-width:100%;height:auto;display:block}
   .rb-grid{grid-template-columns:repeat(2,1fr)}
   .rb-section__head--split,.rb-story__inner{grid-template-columns:1fr;gap:34px}
   .rb-story__copy{max-width:720px}
-  .rb-hero{min-height:74vh}
+  .rb-hero{min-height:68vh}
+  .rb-hero__content{max-width:560px}
 }
 @media (max-width:640px){
   .rb-container{width:min(calc(100% - 28px),var(--rb-max))}
   .site-header__inner{min-height:70px}
   .site-brand img{max-height:50px}
   .site-nav{top:68px;left:14px;right:14px}
-  .rb-hero{min-height:72vh;align-items:flex-end}
-  .rb-hero__content{padding:100px 0 58px}
-  .rb-hero h1{font-size:clamp(42px,12vw,60px)}
-  .rb-hero__overlay{background:linear-gradient(180deg,rgba(13,8,5,.16) 0%,rgba(13,8,5,.52) 38%,rgba(13,8,5,.94) 100%)}
+  .rb-hero{min-height:70vh;align-items:flex-end}
+  .rb-hero__content{padding:96px 0 54px;max-width:100%}
+  .rb-hero h1{font-size:clamp(38px,10.5vw,52px);max-width:11ch}
+  .rb-hero p{font-size:17px;max-width:30ch}
+  .rb-hero__overlay{background:linear-gradient(180deg,rgba(13,8,5,.12) 0%,rgba(13,8,5,.48) 35%,rgba(13,8,5,.94) 100%)}
   .rb-grid{grid-template-columns:1fr}
   .rb-section,.rb-story{padding:72px 0}
   .rb-actions{flex-direction:column;align-items:stretch}
