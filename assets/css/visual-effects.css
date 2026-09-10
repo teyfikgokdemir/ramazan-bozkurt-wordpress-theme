@@ -16,9 +16,28 @@
 .rb-card__media:after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 65%);transform:translateX(-130%);transition:transform .7s ease}
 .rb-card__media{position:relative}
 .rb-card:hover .rb-card__media:after{transform:translateX(130%)}
-.rb-home-shop .woocommerce ul.products{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+
+.rb-hero__content--premium{display:flex;align-items:flex-end;justify-content:center;max-width:none;padding-bottom:32px}
+.rb-hero-promo{display:flex;align-items:center;gap:18px 24px;flex-wrap:wrap;justify-content:center;max-width:980px;padding:14px 18px;border:1px solid rgba(226,201,143,.24);border-radius:18px;background:rgba(12,8,6,.62);backdrop-filter:blur(14px);box-shadow:0 18px 55px rgba(0,0,0,.24)}
+.rb-hero-promo__eyebrow{color:var(--rb-gold);font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.rb-hero-promo strong{font-family:Georgia,"Times New Roman",serif;font-size:clamp(20px,2vw,28px);font-weight:600;letter-spacing:-.02em;color:var(--rb-cream)}
+.rb-hero-promo__sub{color:#d2c5ba;font-size:12px}
+.rb-hero-promo .rb-actions{margin-left:auto}
+.rb-hero-promo .rb-btn{min-height:42px;padding:0 17px;font-size:12px!important}
+
+.rb-ticker{overflow:hidden;border-top:1px solid rgba(203,166,94,.18);border-bottom:1px solid rgba(203,166,94,.18);background:#0b0806}
+.rb-ticker__track{display:flex;width:max-content;animation:rbTicker 30s linear infinite}
+.rb-ticker__group{display:flex;align-items:center;gap:26px;white-space:nowrap;padding:14px 0}
+.rb-ticker__group span{font-size:13px;font-weight:750;letter-spacing:.01em;color:#ded2c6}
+.rb-ticker__group i{font-style:normal;font-size:8px;color:var(--rb-gold);opacity:.75}
+@keyframes rbTicker{to{transform:translateX(-50%)}}
+
+.rb-home-shop ul.products,.rb-home-shop .products,.rb-home-shop.woocommerce ul.products{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:22px!important}
+.rb-home-shop ul.products li.product,.rb-home-shop .products li.product{width:auto!important;max-width:none!important;margin:0!important;float:none!important}
+
 @keyframes rbHeroBreath{from{transform:scale(1.005)}to{transform:scale(1.035)}}
-@media(prefers-reduced-motion:reduce){.rb-hero__media img{animation:none}.site-nav .sub-menu,.site-nav .menu>li>a,.rb-card{transition:none!important}}
-@media(max-width:980px){.rb-home-shop .woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(prefers-reduced-motion:reduce){.rb-hero__media img{animation:none}.site-nav .sub-menu,.site-nav .menu>li>a,.rb-card{transition:none!important}.rb-ticker__track{animation:none}}
+@media(max-width:980px){.rb-home-shop ul.products,.rb-home-shop .products,.rb-home-shop.woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rb-hero-promo{justify-content:flex-start}.rb-hero-promo .rb-actions{margin-left:0}}
 @media(max-width:880px){.site-nav .menu{display:grid;gap:4px}.site-nav .menu>li>a{width:100%;justify-content:space-between}.site-nav .sub-menu{position:static;min-width:0;margin:2px 0 6px;padding:0 0 0 12px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;opacity:1;visibility:visible;transform:none;max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease;opacity:0}.site-nav .menu-item-has-children.is-submenu-open>.sub-menu{max-height:320px;opacity:1}.site-nav .sub-menu a{padding:10px 12px}.site-nav .menu-item-has-children.is-submenu-open>a:after{transform:rotate(180deg)}}
-@media(max-width:560px){.rb-home-shop .woocommerce ul.products{grid-template-columns:1fr!important}}
+@media(max-width:640px){.rb-hero__content--premium{padding-bottom:18px}.rb-hero-promo{display:grid;gap:8px;width:100%;padding:14px}.rb-hero-promo .rb-actions{margin-top:5px}.rb-ticker__group{gap:18px;padding:12px 0}.rb-ticker__group span{font-size:12px}}
+@media(max-width:560px){.rb-home-shop ul.products,.rb-home-shop .products,.rb-home-shop.woocommerce ul.products{grid-template-columns:1fr!important}}
