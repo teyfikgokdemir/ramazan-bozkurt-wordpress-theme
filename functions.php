@@ -263,3 +263,6 @@ function rb_cart_fragments($fragments) { ob_start(); ?><span class="rb-cart-coun
 add_filter('woocommerce_add_to_cart_fragments', 'rb_cart_fragments');
 
 require_once get_template_directory() . '/inc/delivery-setup.php';
+require_once get_template_directory() . '/inc/commerce-config.php';
+require_once get_template_directory() . '/inc/product-experience.php';
+require_once get_template_directory() . '/inc/navigation-setup.php';
