@@ -32,7 +32,19 @@ $b2b_visual = rb_media_first(['ramazan-bozkurt-kayseri-geleneksel-lezzet-banner'
   </div>
 </section>
 
-<section class="rb-trust-strip" aria-label="Alışveriş ve kurumsal satış avantajları"><div class="rb-container rb-trust-strip__grid"><div><strong>4.000 TL ve üzeri</strong><span>Ücretsiz kargo</span></div><div><strong>4.000 TL altı</strong><span>180 TL kargo</span></div><div><strong>250 g • 500 g • 1 kg</strong><span>Gramaj seçenekleri</span></div><div><strong>B2B & Kurumsal</strong><span>Toptan tedarik görüşmesi</span></div></div></section>
+<section class="rb-marquee" aria-label="Ramazan Bozkurt alışveriş avantajları">
+  <div class="rb-marquee__track">
+    <?php for ($rb_i = 0; $rb_i < 2; $rb_i++) : ?>
+      <div class="rb-marquee__group" aria-hidden="<?php echo $rb_i ? 'true' : 'false'; ?>">
+        <span><b>4.000 TL ve üzeri</b> ücretsiz kargo</span><i>•</i>
+        <span><b>250 g • 500 g • 1 kg</b> gramaj seçenekleri</span><i>•</i>
+        <span><b>Kayseri’den</b> Türkiye geneli gönderim</span><i>•</i>
+        <span><b>B2B & Kurumsal</b> toptan tedarik görüşmesi</span><i>•</i>
+        <span><b>WhatsApp</b> sipariş ve ürün desteği</span><i>•</i>
+      </div>
+    <?php endfor; ?>
+  </div>
+</section>
 
 <section id="urunler" class="rb-section rb-section--surface rb-home-products"><div class="rb-container">
   <div class="rb-section__head rb-section__head--split"><div><div class="rb-eyebrow">Doğrudan Ürünlere Ulaşın</div><h1>Kayseri’nin geleneksel lezzetlerini gramajını seçerek sipariş edin.</h1></div><p>Pastırma, sucuk, kavurma ve mantıda 250 g, 500 g ve 1 kg seçenekleri. Ürün sayfasından gramaj seçip doğrudan sepete ekleyebilirsiniz.</p></div>
