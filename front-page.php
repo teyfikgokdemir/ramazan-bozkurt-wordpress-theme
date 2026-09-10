@@ -26,23 +26,25 @@ $b2b_visual = rb_media_first(['ramazan-bozkurt-kayseri-geleneksel-lezzet-banner'
 <section class="rb-hero<?php echo $hero ? ' has-media' : ''; ?>" aria-label="Ramazan Bozkurt Et ve Et Mamulleri">
   <?php if ($hero) : ?><div class="rb-hero__media"><img src="<?php echo esc_url($hero); ?>" alt="Ramazan Bozkurt Et ve Et Mamulleri Kayseri pastırma sucuk kavurma ve mantı" fetchpriority="high"></div><?php endif; ?>
   <div class="rb-hero__overlay"></div>
-  <div class="rb-container rb-hero__content">
-    <p>Kayseri pastırması, sucuk, kavurma ve mantı. Perakende satışın yanında işletmeler, zincir marketler ve profesyonel alıcılar için B2B tedarik görüşmeleri.</p>
-    <div class="rb-actions"><a class="rb-btn rb-btn--primary" href="#urunler">Ürünleri İncele</a><a class="rb-btn rb-btn--ghost" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif Al</a></div>
+  <div class="rb-container rb-hero__content rb-hero__content--premium">
+    <div class="rb-hero-promo">
+      <span class="rb-hero-promo__eyebrow">Kayseri’den sofranıza</span>
+      <strong>Pastırma • Sucuk • Kavurma • Mantı</strong>
+      <span class="rb-hero-promo__sub">Perakende sipariş ve kurumsal tedarik</span>
+      <div class="rb-actions"><a class="rb-btn rb-btn--primary" href="#urunler">Ürünleri İncele</a><a class="rb-btn rb-btn--ghost" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif</a></div>
+    </div>
   </div>
 </section>
 
-<section class="rb-marquee" aria-label="Ramazan Bozkurt alışveriş avantajları">
-  <div class="rb-marquee__track">
-    <?php for ($rb_i = 0; $rb_i < 2; $rb_i++) : ?>
-      <div class="rb-marquee__group" aria-hidden="<?php echo $rb_i ? 'true' : 'false'; ?>">
-        <span><b>4.000 TL ve üzeri</b> ücretsiz kargo</span><i>•</i>
-        <span><b>250 g • 500 g • 1 kg</b> gramaj seçenekleri</span><i>•</i>
-        <span><b>Kayseri’den</b> Türkiye geneli gönderim</span><i>•</i>
-        <span><b>B2B & Kurumsal</b> toptan tedarik görüşmesi</span><i>•</i>
-        <span><b>WhatsApp</b> sipariş ve ürün desteği</span><i>•</i>
-      </div>
-    <?php endfor; ?>
+<section class="rb-ticker" aria-label="Alışveriş ve kurumsal satış avantajları">
+  <div class="rb-ticker__track">
+    <?php for($i=0;$i<2;$i++): ?><div class="rb-ticker__group" aria-hidden="<?php echo $i ? 'true' : 'false'; ?>">
+      <span>4.000 TL ve üzeri ücretsiz kargo</span><i>◆</i>
+      <span>250 g • 500 g • 1 kg seçenekleri</span><i>◆</i>
+      <span>Kayseri’den Türkiye geneli gönderim</span><i>◆</i>
+      <span>B2B & kurumsal tedarik</span><i>◆</i>
+      <span>WhatsApp sipariş ve ürün desteği</span><i>◆</i>
+    </div><?php endfor; ?>
   </div>
 </section>
 
