@@ -12,6 +12,7 @@
     <link rel="apple-touch-icon" href="<?php echo esc_url($rb_favicon); ?>">
   <?php endif; ?>
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale-landing.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . wp_get_theme()->get('Version')); ?>">
