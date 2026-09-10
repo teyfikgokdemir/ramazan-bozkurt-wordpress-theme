@@ -50,6 +50,34 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', syncHeader, { passive: true });
   }
 
+  const scrollTopButton = document.querySelector('[data-scroll-top]');
+  if (scrollTopButton) {
+    let scrollHideTimer = null;
+
+    const hideScrollButton = function () {
+      scrollTopButton.classList.remove('is-visible');
+    };
+
+    const showScrollButton = function () {
+      if (window.scrollY < 260) {
+        hideScrollButton();
+        return;
+      }
+
+      scrollTopButton.classList.add('is-visible');
+      window.clearTimeout(scrollHideTimer);
+      scrollHideTimer = window.setTimeout(hideScrollButton, 900);
+    };
+
+    scrollTopButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      hideScrollButton();
+    });
+
+    window.addEventListener('scroll', showScrollButton, { passive: true });
+    hideScrollButton();
+  }
+
   const cookieBanner = document.querySelector('[data-cookie-banner]');
   if (cookieBanner) {
     const consent = localStorage.getItem('rb_cookie_consent');
