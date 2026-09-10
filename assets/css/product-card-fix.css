@@ -1,0 +1,23 @@
+.woocommerce ul.products li.product .button,
+.woocommerce-page ul.products li.product .button,
+a.button.product_type_simple.add_to_cart_button,
+a.button.product_type_simple.ajax_add_to_cart{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+  min-height:46px!important;
+  height:46px!important;
+  padding:0 20px!important;
+  margin:10px 20px 0!important;
+  line-height:1!important;
+  text-align:center!important;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+  width:150px!important;
+}
+.woocommerce ul.products li.product .button::after,
+.woocommerce-page ul.products li.product .button::after{line-height:1!important}
