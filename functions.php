@@ -39,6 +39,7 @@ add_action('after_setup_theme', 'rb_theme_setup');
 function rb_enqueue_assets() {
     $version = wp_get_theme()->get('Version');
     wp_enqueue_style('rb-style', get_stylesheet_uri(), [], $version);
+    wp_enqueue_style('rb-hero-fix', get_template_directory_uri() . '/assets/css/hero-fix.css', ['rb-style'], $version);
     wp_enqueue_script('rb-site', get_template_directory_uri() . '/assets/js/site.js', [], $version, true);
 }
 add_action('wp_enqueue_scripts', 'rb_enqueue_assets');
