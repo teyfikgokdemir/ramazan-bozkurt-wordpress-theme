@@ -27,8 +27,6 @@ function rb_adjust_shipping_rates($rates, $package) {
 }
 add_filter('woocommerce_package_rates', 'rb_adjust_shipping_rates', 100, 2);
 
-/* Shipping fee is intentionally not promoted on product/cart/mini-cart screens.
- * The customer sees the actual shipping charge during checkout. */
 function rb_free_shipping_checkout_notice() {
     if (!function_exists('WC') || !WC()->cart || WC()->cart->is_empty()) { return; }
     echo '<div class="rb-shipping-progress rb-shipping-progress--simple" role="status"><div class="rb-shipping-progress__copy"><strong>4.000 TL ve üzeri ücretsiz kargo</strong></div></div>';
@@ -81,13 +79,39 @@ function rb_apply_variable_product($product_id, $name, array $prices, $sku_prefi
     wc_delete_product_transients($product_id);
 }
 
-/* Owner-approved catalog, September 2026.
- * Pastırma prices are the owner's 1 kg prices; smaller gramages are proportional.
- * Sucuk: 1 kg 1.300 TL. Mantı: one 500 g pack, 325 TL. */
 function rb_owner_catalog_v2() {
     if (get_option('rb_owner_catalog_v2') || !class_exists('WooCommerce')) { return; }
+    rb_owner_catalog_force_v3();
+    update_option('rb_owner_catalog_v2', 1);
+}
+add_action('admin_init', 'rb_owner_catalog_v2', 160);
 
-    $pastirma_category = taxonomy_exists('product_cat') ? get_term_by('slug', 'pastirma', 'product_cat') : null;
+function rb_owner_kavurma_v1() {
+    if (get_option('rb_owner_kavurma_v1') || !class_exists('WooCommerce')) { return; }
+    rb_owner_catalog_force_v3();
+    update_option('rb_owner_kavurma_v1', 1);
+}
+add_action('admin_init', 'rb_owner_kavurma_v1', 170);
+
+/* Fresh migration key so earlier one-time flags cannot block the owner-approved catalog. */
+function rb_owner_catalog_force_v3() {
+    if (!class_exists('WooCommerce')) { return; }
+
+    $ensure_category = function($slug, $name) {
+        if (!taxonomy_exists('product_cat')) { return null; }
+        $term = get_term_by('slug', $slug, 'product_cat');
+        if (!$term) {
+            $created = wp_insert_term($name, 'product_cat', ['slug' => $slug]);
+            if (!is_wp_error($created)) { $term = get_term((int)$created['term_id'], 'product_cat'); }
+        }
+        return ($term && !is_wp_error($term)) ? $term : null;
+    };
+
+    $pastirma_category = $ensure_category('pastirma', 'Pastırma');
+    $sucuk_category = $ensure_category('sucuk', 'Sucuk');
+    $kavurma_category = $ensure_category('kavurma', 'Kavurma');
+    $manti_category = $ensure_category('manti', 'Mantı');
+
     $pastirma_products = [
         'kayseri-pastirmasi-250-g' => ['Sırt Pastırma', ['250 g'=>'750','400 g'=>'1200','700 g'=>'2100','1 kg'=>'3000'], 'RB-SIRT', ['ramazan-bozkurt-kayseri-pastirmasi-dilimli-sunum','ramazan-bozkurt-pastirma-kesit-detay','ramazan-bozkurt-pastirma-dilim-detay']],
         'antrikot-pastirma' => ['Antrikot Pastırma', ['250 g'=>'800','400 g'=>'1280','700 g'=>'2240','1 kg'=>'3200'], 'RB-ANT', ['ramazan-bozkurt-kayseri-pastirmasi-premium-sunum','ramazan-bozkurt-pastirma-makro-detay','ramazan-bozkurt-pastirma-dilim-detay-1']],
@@ -98,12 +122,20 @@ function rb_owner_catalog_v2() {
     foreach ($pastirma_products as $slug => $data) {
         $post = get_page_by_path($slug, OBJECT, 'product');
         if (!$post) {
-            $id = wp_insert_post(['post_type'=>'product','post_status'=>'publish','post_title'=>$data[0],'post_name'=>$slug,'post_excerpt'=>'250 g, 400 g, 700 g ve 1 kg gramaj seçenekleriyle Kayseri pastırması.','post_content'=>'<h2>'.esc_html($data[0]).'</h2><p>Ramazan Bozkurt Et ve Et Mamulleri pastırma seçkisinde 250 g, 400 g, 700 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>250 g</li><li>400 g</li><li>700 g</li><li>1 kg</li></ul><p>Ambalaj üzerindeki saklama ve tüketim talimatlarını esas alınız.</p>']);
+            $id = wp_insert_post([
+                'post_type'=>'product','post_status'=>'publish','post_title'=>$data[0],'post_name'=>$slug,
+                'post_excerpt'=>'250 g, 400 g, 700 g ve 1 kg gramaj seçenekleriyle Kayseri pastırması.',
+                'post_content'=>'<h2>'.esc_html($data[0]).'</h2><p>250 g, 400 g, 700 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>250 g</li><li>400 g</li><li>700 g</li><li>1 kg</li></ul><p>Ambalaj üzerindeki saklama ve tüketim talimatlarını esas alınız.</p>'
+            ]);
             if (is_wp_error($id) || !$id) { continue; }
             $post = get_post($id);
+        } else {
+            wp_update_post(['ID'=>$post->ID,'post_title'=>$data[0],'post_status'=>'publish','post_excerpt'=>'250 g, 400 g, 700 g ve 1 kg gramaj seçenekleriyle Kayseri pastırması.']);
         }
         $id = (int)$post->ID;
-        if ($pastirma_category && !is_wp_error($pastirma_category)) { wp_set_object_terms($id, [(int)$pastirma_category->term_id], 'product_cat'); }
+        if ($pastirma_category) { wp_set_object_terms($id, [(int)$pastirma_category->term_id], 'product_cat', false); }
+        update_post_meta($id, '_visibility', 'visible');
+        delete_post_meta($id, '_product_visibility');
         $main = rb_media_id_first([$data[3][0]]); if ($main) { set_post_thumbnail($id, $main); }
         $gallery=[]; foreach(array_slice($data[3],1) as $img){ $iid=rb_media_id_first([$img]); if($iid && $iid!==$main){$gallery[]=$iid;} }
         update_post_meta($id, '_product_image_gallery', implode(',', $gallery));
@@ -112,46 +144,37 @@ function rb_owner_catalog_v2() {
 
     $sucuk = get_page_by_path('kayseri-sucugu-500-g', OBJECT, 'product');
     if ($sucuk) {
-        wp_update_post(['ID'=>$sucuk->ID,'post_title'=>'Kayseri Sucuğu','post_excerpt'=>'500 g ve 1 kg seçenekleriyle Kayseri sucuğu.','post_content'=>'<h2>Kayseri Sucuğu</h2><p>500 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>500 g</li><li>1 kg</li></ul><p>Pişirme, saklama ve tüketim için ambalaj üzerindeki talimatları esas alınız.</p>']);
+        wp_update_post(['ID'=>$sucuk->ID,'post_title'=>'Kayseri Sucuğu','post_status'=>'publish','post_excerpt'=>'500 g ve 1 kg seçenekleriyle Kayseri sucuğu.','post_content'=>'<h2>Kayseri Sucuğu</h2><p>500 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>500 g</li><li>1 kg</li></ul><p>Pişirme, saklama ve tüketim için ambalaj üzerindeki talimatları esas alınız.</p>']);
+        if ($sucuk_category) { wp_set_object_terms((int)$sucuk->ID, [(int)$sucuk_category->term_id], 'product_cat', false); }
         rb_apply_variable_product((int)$sucuk->ID, 'Kayseri Sucuğu', ['500 g'=>'650','1 kg'=>'1300'], 'RB-SUC', '500 g');
+    }
+
+    $kavurma = get_page_by_path('kayseri-kavurmasi-250-g', OBJECT, 'product');
+    if ($kavurma) {
+        wp_update_post(['ID'=>$kavurma->ID,'post_title'=>'Kayseri Kavurması','post_status'=>'publish','post_excerpt'=>'250 g, 500 g, 750 g ve 1 kg seçenekleriyle Kayseri kavurması.','post_content'=>'<h2>Kayseri Kavurması</h2><p>250 g, 500 g, 750 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>250 g</li><li>500 g</li><li>750 g</li><li>1 kg</li></ul><p>Saklama, ısıtma ve tüketim için ambalaj üzerindeki talimatları esas alınız.</p>']);
+        if ($kavurma_category) { wp_set_object_terms((int)$kavurma->ID, [(int)$kavurma_category->term_id], 'product_cat', false); }
+        rb_apply_variable_product((int)$kavurma->ID, 'Kayseri Kavurması', ['250 g'=>'500','500 g'=>'1000','750 g'=>'1500','1 kg'=>'2000'], 'RB-KAV', '250 g');
     }
 
     $manti = get_page_by_path('kayseri-mantisi-500-g', OBJECT, 'product');
     if ($manti) {
+        if ($manti_category) { wp_set_object_terms((int)$manti->ID, [(int)$manti_category->term_id], 'product_cat', false); }
         wp_set_object_terms((int)$manti->ID, 'simple', 'product_type'); clean_post_cache((int)$manti->ID);
         $product = new WC_Product_Simple((int)$manti->ID);
         $product->set_name('Kayseri Mantısı 500 g'); $product->set_regular_price('325'); $product->set_price('325');
-        $product->set_manage_stock(true); $product->set_stock_quantity(10); $product->set_stock_status('instock');
+        $product->set_manage_stock(true); $product->set_stock_quantity(10); $product->set_stock_status('instock'); $product->set_catalog_visibility('visible');
         $product->set_short_description('1 paket 500 g Kayseri mantısı.');
         $product->set_description('<h2>Kayseri Mantısı 500 g</h2><p>Tek paket seçeneği 500 gramdır.</p><h3>Paket bilgisi</h3><ul><li>1 paket: 500 g</li></ul><p>Pişirme ve saklama koşulları için ambalaj üzerindeki talimatları esas alınız.</p>');
         $product->save();
         foreach (get_posts(['post_type'=>'product_variation','post_parent'=>$manti->ID,'numberposts'=>-1,'fields'=>'ids']) as $vid) { wp_delete_post($vid,true); }
     }
-
-    update_option('rb_owner_catalog_v2', 1);
 }
-add_action('admin_init', 'rb_owner_catalog_v2', 160);
 
-/* Owner update: Kavurma 1 kg = 2.000 TL; 250 g / 500 g / 750 g / 1 kg. */
-function rb_owner_kavurma_v1() {
-    if (get_option('rb_owner_kavurma_v1') || !class_exists('WooCommerce')) { return; }
-    $post = get_page_by_path('kayseri-kavurmasi-250-g', OBJECT, 'product');
-    if (!$post) { return; }
-
-    wp_update_post([
-        'ID' => $post->ID,
-        'post_title' => 'Kayseri Kavurması',
-        'post_excerpt' => '250 g, 500 g, 750 g ve 1 kg seçenekleriyle Kayseri kavurması.',
-        'post_content' => '<h2>Kayseri Kavurması</h2><p>250 g, 500 g, 750 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>250 g</li><li>500 g</li><li>750 g</li><li>1 kg</li></ul><p>Saklama, ısıtma ve tüketim için ambalaj üzerindeki talimatları esas alınız.</p>',
-    ]);
-
-    rb_apply_variable_product((int)$post->ID, 'Kayseri Kavurması', [
-        '250 g' => '500',
-        '500 g' => '1000',
-        '750 g' => '1500',
-        '1 kg' => '2000',
-    ], 'RB-KAV', '250 g');
-
-    update_option('rb_owner_kavurma_v1', 1);
+function rb_owner_catalog_v3_migration() {
+    if (get_option('rb_owner_catalog_v3') || !class_exists('WooCommerce')) { return; }
+    rb_owner_catalog_force_v3();
+    update_option('rb_owner_catalog_v3', 1);
+    if (function_exists('wc_delete_product_transients')) { wc_delete_product_transients(); }
+    flush_rewrite_rules(false);
 }
-add_action('admin_init', 'rb_owner_kavurma_v1', 170);
+add_action('admin_init', 'rb_owner_catalog_v3_migration', 180);
