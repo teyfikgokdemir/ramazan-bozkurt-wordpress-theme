@@ -50,16 +50,19 @@ $b2b_visual = rb_media_first(['ramazan-bozkurt-kayseri-pastirma-sucuk-manti-kavu
 <section class="rb-b2b-premium" aria-labelledby="rb-b2b-title">
   <div class="rb-container">
     <div class="rb-b2b-premium__intro">
-      <div><div class="rb-eyebrow">Kurumsal Tedarik</div><h2 id="rb-b2b-title">Perakende rafından profesyonel mutfağa, güçlü bir tedarik dili.</h2></div>
-      <p>Ramazan Bozkurt Et ve Et Mamulleri; zincir ve yerel marketler, şarküteriler, HORECA işletmeleri ve düzenli alım yapan profesyonel müşteriler için ürün, gramaj ve sipariş hacmine göre kurumsal teklif süreci yürütür.</p>
+      <div><div class="rb-eyebrow">Kurumsal Tedarik</div><h2 id="rb-b2b-title">Profesyonel satın alma için net, düzenli ve ölçeklenebilir tedarik.</h2></div>
+      <p>Perakende satışın yanında, düzenli ve hacimli alım yapan işletmeler için ürün grubu, gramaj, sipariş hacmi ve teslimat planı üzerinden doğrudan teklif süreci yürütüyoruz.</p>
     </div>
     <div class="rb-b2b-premium__stage">
-      <div class="rb-b2b-premium__visual"><?php if($b2b_visual): ?><img src="<?php echo esc_url($b2b_visual); ?>" alt="Ramazan Bozkurt kurumsal tedarik ürün seçkisi" loading="lazy"><?php endif; ?><div class="rb-b2b-premium__seal"><span>B2B</span><small>Kayseri’den<br>kurumsal tedarik</small></div></div>
+      <div class="rb-b2b-premium__visual">
+        <?php if($b2b_visual): ?><img src="<?php echo esc_url($b2b_visual); ?>" alt="Ramazan Bozkurt kurumsal tedarik ürün seçkisi" loading="lazy"><?php endif; ?>
+        <div class="rb-b2b-premium__seal"><span>B2B</span><small>Kayseri’den kurumsal tedarik</small></div>
+      </div>
       <div class="rb-b2b-premium__content">
-        <div class="rb-b2b-premium__line"><h3>Market & Şarküteri</h3><p>Raf yapısı, ürün grubu, gramaj ve sipariş hacmine göre sürdürülebilir tedarik görüşmesi.</p></div>
-        <div class="rb-b2b-premium__line"><h3>HORECA</h3><p>Restoran, otel, kafe ve profesyonel mutfaklar için düzenli alım ve ürün planlaması.</p></div>
-        <div class="rb-b2b-premium__line"><h3>Kurumsal & Bayi</h3><p>Yüksek hacimli veya tekrar eden siparişlerde doğrudan tekliflendirme ve ticari görüşme.</p></div>
-        <div class="rb-b2b-premium__action"><div><strong>Kurumsal satın alma için doğrudan görüşün.</strong><span>Ürünleri, tahmini miktarı ve teslimat şehrini paylaşmanız yeterli.</span></div><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif Al</a></div>
+        <div class="rb-b2b-premium__line"><span class="rb-b2b-premium__kicker">Perakende Kanalı</span><h3>Market & Şarküteri</h3><p>Raf yapısına, ürün grubuna ve sipariş hacmine göre sürdürülebilir tedarik planı.</p></div>
+        <div class="rb-b2b-premium__line"><span class="rb-b2b-premium__kicker">Profesyonel Mutfak</span><h3>HORECA</h3><p>Restoran, otel ve profesyonel mutfaklar için düzenli alım ve ürün planlaması.</p></div>
+        <div class="rb-b2b-premium__line"><span class="rb-b2b-premium__kicker">Ticari İş Birliği</span><h3>Kurumsal & Bayi</h3><p>Tekrar eden veya yüksek hacimli siparişlerde doğrudan ticari görüşme ve tekliflendirme.</p></div>
+        <div class="rb-b2b-premium__action"><div><strong>Kurumsal satın alma talebinizi paylaşın.</strong><span>Ürün, tahmini miktar ve teslimat şehri bilgisi teklif sürecini başlatmak için yeterli.</span></div><a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Kurumsal Teklif Al</a></div>
       </div>
     </div>
   </div>
