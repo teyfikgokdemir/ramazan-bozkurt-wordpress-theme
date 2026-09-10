@@ -7,10 +7,20 @@
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . wp_get_theme()->get('Version')); ?>">
   <script defer src="<?php echo esc_url(get_template_directory_uri() . '/assets/js/cart-progress.js?v=' . wp_get_theme()->get('Version')); ?>"></script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php
+$nav_setup = get_template_directory() . '/inc/navigation-setup.php';
+if (file_exists($nav_setup)) {
+    require_once $nav_setup;
+    if (function_exists('rb_navigation_setup_v1') && !get_option('rb_navigation_setup_v1')) {
+        rb_navigation_setup_v1();
+    }
+}
+?>
 <header class="site-header" data-site-header>
   <div class="rb-container site-header__inner">
     <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Ramazan Bozkurt Et ve Et Mamulleri ana sayfa">
@@ -38,16 +48,22 @@
         wp_nav_menu([
           'theme_location' => 'primary',
           'container' => false,
-          'items_wrap' => '%3$s',
+          'menu_class' => 'menu',
+          'items_wrap' => '<ul class="menu">%3$s</ul>',
           'fallback_cb' => false,
+          'depth' => 2,
         ]);
       } else {
         $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler');
-        echo '<a href="'.esc_url(home_url('/')).'">Ana Sayfa</a>';
-        echo '<a href="'.esc_url($shop_url).'">Ürünler</a>';
-        echo '<a href="'.esc_url(home_url('/hakkimizda')).'">Hakkımızda</a>';
-        echo '<a href="'.esc_url(home_url('/toptan-satis')).'">Toptan Satış</a>';
-        echo '<a href="'.esc_url(home_url('/iletisim')).'">İletişim</a>';
+        echo '<ul class="menu">';
+        echo '<li><a href="'.esc_url(home_url('/')).'">Ana Sayfa</a></li>';
+        echo '<li><a href="'.esc_url($shop_url).'">Ürünler</a></li>';
+        echo '<li><a href="'.esc_url(home_url('/toptan-satis')).'">Toptan Satış</a></li>';
+        echo '<li><a href="'.esc_url(home_url('/yemek-tarifleri')).'">Yemek Tarifleri</a></li>';
+        echo '<li><a href="'.esc_url(home_url('/blog')).'">Blog</a></li>';
+        echo '<li><a href="'.esc_url(home_url('/hakkimizda')).'">Hakkımızda</a></li>';
+        echo '<li><a href="'.esc_url(home_url('/iletisim')).'">İletişim</a></li>';
+        echo '</ul>';
       }
       ?>
     </nav>
