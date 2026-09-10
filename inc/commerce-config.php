@@ -131,3 +131,27 @@ function rb_owner_catalog_v2() {
     update_option('rb_owner_catalog_v2', 1);
 }
 add_action('admin_init', 'rb_owner_catalog_v2', 160);
+
+/* Owner update: Kavurma 1 kg = 2.000 TL; 250 g / 500 g / 750 g / 1 kg. */
+function rb_owner_kavurma_v1() {
+    if (get_option('rb_owner_kavurma_v1') || !class_exists('WooCommerce')) { return; }
+    $post = get_page_by_path('kayseri-kavurmasi-250-g', OBJECT, 'product');
+    if (!$post) { return; }
+
+    wp_update_post([
+        'ID' => $post->ID,
+        'post_title' => 'Kayseri Kavurması',
+        'post_excerpt' => '250 g, 500 g, 750 g ve 1 kg seçenekleriyle Kayseri kavurması.',
+        'post_content' => '<h2>Kayseri Kavurması</h2><p>250 g, 500 g, 750 g ve 1 kg gramaj seçenekleriyle sunulur.</p><h3>Gramaj seçenekleri</h3><ul><li>250 g</li><li>500 g</li><li>750 g</li><li>1 kg</li></ul><p>Saklama, ısıtma ve tüketim için ambalaj üzerindeki talimatları esas alınız.</p>',
+    ]);
+
+    rb_apply_variable_product((int)$post->ID, 'Kayseri Kavurması', [
+        '250 g' => '500',
+        '500 g' => '1000',
+        '750 g' => '1500',
+        '1 kg' => '2000',
+    ], 'RB-KAV', '250 g');
+
+    update_option('rb_owner_kavurma_v1', 1);
+}
+add_action('admin_init', 'rb_owner_kavurma_v1', 170);
