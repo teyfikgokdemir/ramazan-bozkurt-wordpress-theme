@@ -4,6 +4,7 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php wp_head(); ?>
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -42,6 +43,7 @@
         echo '<a href="'.esc_url(home_url('/')).'">Ana Sayfa</a>';
         echo '<a href="'.esc_url($shop_url).'">Ürünler</a>';
         echo '<a href="'.esc_url(home_url('/hakkimizda')).'">Hakkımızda</a>';
+        echo '<a href="'.esc_url(add_query_arg('talep','toptan',home_url('/iletisim'))).'">Toptan Satış</a>';
         echo '<a href="'.esc_url(home_url('/iletisim')).'">İletişim</a>';
       }
       ?>
