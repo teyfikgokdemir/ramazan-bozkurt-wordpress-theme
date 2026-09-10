@@ -28,6 +28,7 @@ $products = [
   ],
 ];
 $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler');
+$wholesale_url = add_query_arg('talep', 'toptan', home_url('/iletisim'));
 ?>
 <section class="rb-hero<?php echo $hero ? ' has-media' : ''; ?>" aria-label="Ramazan Bozkurt Et Ürünleri">
   <?php if ($hero) : ?>
@@ -35,11 +36,20 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
   <?php endif; ?>
   <div class="rb-hero__overlay"></div>
   <div class="rb-container rb-hero__content">
-    <p>Pastırma, sucuk, kavurma ve mantıda seçkin ürünler. Perakende ve toptan satış.</p>
+    <p>Pastırma, sucuk, kavurma ve mantıda seçkin ürünler. Perakende alışverişin yanında işletmelere özel toptan satış.</p>
     <div class="rb-actions">
       <a class="rb-btn rb-btn--primary" href="<?php echo esc_url($shop_url); ?>">Ürünleri İncele</a>
-      <a class="rb-btn rb-btn--ghost" href="<?php echo esc_url(home_url('/iletisim')); ?>">Toptan Satış</a>
+      <a class="rb-btn rb-btn--ghost" href="<?php echo esc_url($wholesale_url); ?>">Toptan Teklif Al</a>
     </div>
+  </div>
+</section>
+
+<section class="rb-trust-strip" aria-label="Teslimat ve satış avantajları">
+  <div class="rb-container rb-trust-strip__grid">
+    <div><strong>4.000 TL üzeri</strong><span>Ücretsiz kargo</span></div>
+    <div><strong>Türkiye geneli</strong><span>Güvenli gönderim</span></div>
+    <div><strong>İşletmelere özel</strong><span>Toptan fiyat teklifi</span></div>
+    <div><strong>Kayseri’den</strong><span>Doğrudan satış</span></div>
   </div>
 </section>
 
@@ -67,6 +77,26 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
           </a>
         </article>
       <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+
+<section class="rb-wholesale-home" aria-labelledby="rb-wholesale-title">
+  <div class="rb-container rb-wholesale-home__grid">
+    <div class="rb-wholesale-home__copy">
+      <div class="rb-eyebrow">Toptan Satış</div>
+      <h2 id="rb-wholesale-title">Restoran, şarküteri, market ve işletmelere özel teklif.</h2>
+      <p>Düzenli alım yapan işletmeler için pastırma, sucuk, kavurma ve mantıda sipariş miktarına göre özel fiyatlandırma ve satış desteği sunuyoruz.</p>
+      <div class="rb-wholesale-points">
+        <span>Toplu siparişe özel fiyat</span>
+        <span>Düzenli tedarik görüşmesi</span>
+        <span>Hızlı teklif ve doğrudan iletişim</span>
+      </div>
+      <a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Toptan Teklif İste</a>
+    </div>
+    <div class="rb-wholesale-home__visual">
+      <?php $wholesale_visual = rb_media_first(['ramazan-bozkurt-kayseri-pastirma-sucuk-manti-kavurma','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']); ?>
+      <?php if ($wholesale_visual) : ?><img src="<?php echo esc_url($wholesale_visual); ?>" alt="Ramazan Bozkurt toptan pastırma sucuk kavurma ve mantı ürünleri" loading="lazy"><?php endif; ?>
     </div>
   </div>
 </section>
@@ -108,22 +138,22 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
   <div class="rb-container">
     <div class="rb-section__head rb-section__head--split">
       <div><div class="rb-eyebrow">Mağazadan seçilenler</div><h2>Öne çıkan ürünler</h2></div>
-      <p>Yeni eklenen ve öne çıkarılan ürünleri doğrudan mağazadan inceleyin.</p>
+      <p>Yeni eklenen ve öne çıkarılan ürünleri doğrudan mağazadan inceleyin. İşletme alımlarında ürün sayfasındaki toptan teklif bağlantısını kullanabilirsiniz.</p>
     </div>
     <?php echo do_shortcode('[products limit="3" columns="3" visibility="featured"]'); ?>
   </div>
 </section>
 <?php endif; ?>
 
-<section class="rb-cta">
+<section class="rb-cta rb-cta--wholesale">
   <div class="rb-container rb-cta__inner">
     <div>
-      <div class="rb-eyebrow">Perakende & Toptan</div>
-      <h2>Kayseri lezzetlerini sofranıza taşıyalım.</h2>
+      <div class="rb-eyebrow">Toptan sipariş mi planlıyorsunuz?</div>
+      <h2>İşletmenize uygun miktar ve fiyat için doğrudan teklif alın.</h2>
     </div>
     <div class="rb-actions">
-      <a class="rb-btn rb-btn--primary" href="<?php echo esc_url($shop_url); ?>">Mağazaya Git</a>
-      <a class="rb-btn rb-btn--ghost" href="<?php echo esc_url(home_url('/iletisim')); ?>">İletişime Geç</a>
+      <a class="rb-btn rb-btn--primary" href="<?php echo esc_url($wholesale_url); ?>">Toptan Teklif Al</a>
+      <a class="rb-btn rb-btn--ghost" href="<?php echo esc_url($shop_url); ?>">Perakende Mağaza</a>
     </div>
   </div>
 </section>
