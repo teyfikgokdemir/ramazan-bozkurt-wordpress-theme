@@ -6,6 +6,24 @@ if (file_exists($legal_setup)) {
         rb_seed_legal_pages_v1();
     }
 }
+
+$rb_whatsapp_phone = '905398248295';
+$rb_whatsapp_message = 'Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. Ürünleriniz ve sipariş süreci hakkında bilgi almak istiyorum.';
+
+if (function_exists('is_product') && is_product()) {
+    $rb_product_title = wp_strip_all_tags(get_the_title());
+    $rb_whatsapp_message = 'Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. ' . $rb_product_title . ' ürünü hakkında bilgi almak istiyorum.';
+} elseif (is_page('toptan-satis')) {
+    $rb_whatsapp_message = 'Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. Toptan alım ve kurumsal tedarik hakkında teklif almak istiyorum.';
+} elseif (function_exists('is_product_category') && is_product_category()) {
+    $rb_term = get_queried_object();
+    $rb_term_name = (!empty($rb_term->name)) ? wp_strip_all_tags($rb_term->name) : 'ürünleriniz';
+    $rb_whatsapp_message = 'Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. ' . $rb_term_name . ' ürünleriniz, gramaj seçenekleri ve fiyatları hakkında bilgi almak istiyorum.';
+} elseif (is_page('iletisim')) {
+    $rb_whatsapp_message = 'Merhaba, Ramazan Bozkurt Et ve Et Mamulleri web sitesinden ulaşıyorum. Sipariş ve ürünleriniz hakkında görüşmek istiyorum.';
+}
+
+$rb_whatsapp_url = 'https://wa.me/' . $rb_whatsapp_phone . '?text=' . rawurlencode($rb_whatsapp_message);
 ?>
 </main>
 <footer class="site-footer">
@@ -38,7 +56,7 @@ if (file_exists($legal_setup)) {
       <a href="<?php echo esc_url(home_url('/toptan-satis')); ?>">Toptan Satış</a>
       <a href="<?php echo esc_url(home_url('/iletisim')); ?>">İletişim</a>
       <a href="tel:+905398248295">Telefon: +90 539 824 82 95</a>
-      <a href="https://wa.me/905398248295" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="<?php echo esc_url($rb_whatsapp_url); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
     </div>
   </div>
   <div class="rb-container site-footer__bottom">
@@ -47,7 +65,7 @@ if (file_exists($legal_setup)) {
   </div>
 </footer>
 
-<a class="rb-whatsapp" href="https://wa.me/905398248295" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 539 824 82 95 numarasından iletişime geç">
+<a class="rb-whatsapp" href="<?php echo esc_url($rb_whatsapp_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 539 824 82 95 numarasından iletişime geç">
   <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
     <path fill="currentColor" d="M16.04 3C9.42 3 4.05 8.27 4.05 14.77c0 2.28.67 4.5 1.93 6.4L3.9 28.9l8-2.04a12.2 12.2 0 0 0 4.13.72h.01c6.62 0 12-5.27 12-11.77C28.04 8.27 22.66 3 16.04 3Zm0 21.98h-.01a9.63 9.63 0 0 1-3.68-.72l-.59-.24-4.75 1.21 1.27-4.53-.27-.61a9.1 9.1 0 0 1-1.35-4.79c0-5.02 4.2-9.1 9.38-9.1 5.17 0 9.38 4.08 9.38 9.1 0 5.02-4.21 9.1-9.38 9.1Zm5.15-6.81c-.28-.14-1.66-.8-1.92-.89-.26-.09-.45-.14-.64.14-.19.27-.73.89-.9 1.08-.17.18-.33.2-.61.07-.28-.14-1.19-.43-2.26-1.36a8.67 8.67 0 0 1-1.57-1.91c-.16-.27-.02-.42.12-.56.13-.13.28-.34.42-.5.14-.16.19-.27.28-.45.09-.18.05-.34-.02-.48-.07-.14-.64-1.51-.88-2.06-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.34-.26.27-1  .96-1 2.34 0 1.37 1.03 2.7 1.17 2.88.14.18 2.02 3.01 4.9 4.22.68.29 1.22.46 1.63.59.68.21 1.31.18 1.8.11.55-.08 1.66-.66 1.9-1.3.24-.64.24-1.19.17-1.3-.07-.12-.26-.19-.54-.33Z"/>
   </svg>
