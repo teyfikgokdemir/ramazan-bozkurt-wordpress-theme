@@ -1,0 +1,21 @@
+.site-nav .menu{display:flex;align-items:center;gap:10px;margin:0;padding:0;list-style:none}
+.site-nav .menu>li{position:relative;list-style:none}
+.site-nav .menu>li>a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;transition:background .28s ease,color .28s ease,transform .28s ease}
+.site-nav .menu>li>a:hover{background:rgba(203,166,94,.08);transform:translateY(-1px)}
+.site-nav .menu-item-has-children>a:after{content:'⌄';position:static;width:auto;height:auto;background:none;margin-left:7px;font-size:12px;color:var(--rb-gold);transform:translateY(-1px);transition:transform .28s ease}
+.site-nav .menu-item-has-children:hover>a:after,.site-nav .menu-item-has-children:focus-within>a:after{transform:translateY(1px) rotate(180deg)}
+.site-nav .sub-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:220px;margin:0;padding:10px;list-style:none;border:1px solid var(--rb-border-strong);border-radius:18px;background:rgba(20,13,9,.97);box-shadow:0 24px 70px rgba(0,0,0,.42);backdrop-filter:blur(18px);opacity:0;visibility:hidden;transform:translate(-50%,-8px) scale(.985);transform-origin:top center;transition:opacity .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility .22s ease}
+.site-nav .menu-item-has-children:hover>.sub-menu,.site-nav .menu-item-has-children:focus-within>.sub-menu{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}
+.site-nav .sub-menu li{list-style:none;margin:0}
+.site-nav .sub-menu a{display:flex;align-items:center;padding:11px 12px;border-radius:12px;color:#e8ded3;transition:background .2s ease,color .2s ease,padding-left .2s ease}
+.site-nav .sub-menu a:hover{background:rgba(203,166,94,.1);color:var(--rb-gold-soft);padding-left:16px}
+.site-header{overflow:visible}
+.rb-hero__media img{animation:rbHeroBreath 12s ease-in-out infinite alternate}
+.rb-card,.woocommerce ul.products li.product{will-change:transform}
+.rb-card:hover,.woocommerce ul.products li.product:hover{transform:translateY(-7px)}
+.rb-card__media:after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 65%);transform:translateX(-130%);transition:transform .7s ease}
+.rb-card__media{position:relative}
+.rb-card:hover .rb-card__media:after{transform:translateX(130%)}
+@keyframes rbHeroBreath{from{transform:scale(1.005)}to{transform:scale(1.035)}}
+@media(prefers-reduced-motion:reduce){.rb-hero__media img{animation:none}.site-nav .sub-menu,.site-nav .menu>li>a,.rb-card{transition:none!important}}
+@media(max-width:880px){.site-nav .menu{display:grid;gap:4px}.site-nav .menu>li>a{width:100%;justify-content:space-between}.site-nav .sub-menu{position:static;min-width:0;margin:2px 0 6px;padding:0 0 0 12px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;opacity:1;visibility:visible;transform:none;max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease;opacity:0}.site-nav .menu-item-has-children.is-submenu-open>.sub-menu{max-height:320px;opacity:1}.site-nav .sub-menu a{padding:10px 12px}.site-nav .menu-item-has-children.is-submenu-open>a:after{transform:rotate(180deg)}}
