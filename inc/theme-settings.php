@@ -94,3 +94,6 @@ function rb_final_content_maintenance_v1() {
     update_option('rb_final_content_maintenance_v1', 1);
 }
 add_action('admin_init', 'rb_final_content_maintenance_v1', 220);
+
+$rb_seo_final = get_template_directory() . '/inc/seo-final.php';
+if (file_exists($rb_seo_final)) { require_once $rb_seo_final; }
