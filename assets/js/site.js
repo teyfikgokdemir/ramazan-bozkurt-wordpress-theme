@@ -15,8 +15,21 @@ document.addEventListener('DOMContentLoaded', function () {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
+    nav.querySelectorAll('.menu-item-has-children > a').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        if (window.innerWidth > 880) return;
+        const parent = link.parentElement;
+        if (!parent.classList.contains('is-submenu-open')) {
+          event.preventDefault();
+          parent.classList.add('is-submenu-open');
+        }
+      });
+    });
+
     nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', closeMenu);
+      link.addEventListener('click', function () {
+        if (window.innerWidth > 880 || !link.parentElement.classList.contains('menu-item-has-children')) closeMenu();
+      });
     });
 
     document.addEventListener('click', function (event) {
@@ -35,5 +48,26 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     syncHeader();
     window.addEventListener('scroll', syncHeader, { passive: true });
+  }
+
+  const cookieBanner = document.querySelector('[data-cookie-banner]');
+  if (cookieBanner) {
+    const consent = localStorage.getItem('rb_cookie_consent');
+    if (!consent) cookieBanner.hidden = false;
+
+    const accept = cookieBanner.querySelector('[data-cookie-accept]');
+    const reject = cookieBanner.querySelector('[data-cookie-reject]');
+
+    if (accept) accept.addEventListener('click', function () {
+      localStorage.setItem('rb_cookie_consent', 'accepted');
+      cookieBanner.hidden = true;
+      document.dispatchEvent(new CustomEvent('rbCookieConsent', { detail: 'accepted' }));
+    });
+
+    if (reject) reject.addEventListener('click', function () {
+      localStorage.setItem('rb_cookie_consent', 'rejected');
+      cookieBanner.hidden = true;
+      document.dispatchEvent(new CustomEvent('rbCookieConsent', { detail: 'rejected' }));
+    });
   }
 });
