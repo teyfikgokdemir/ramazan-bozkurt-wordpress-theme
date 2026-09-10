@@ -98,4 +98,15 @@ document.addEventListener('DOMContentLoaded', function () {
       document.dispatchEvent(new CustomEvent('rbCookieConsent', { detail: 'rejected' }));
     });
   }
+
+  const footer = document.querySelector('.site-footer');
+  if (footer && !footer.querySelector('.rb-agency-credit')) {
+    const credit = document.createElement('div');
+    credit.className = 'rb-agency-credit';
+    credit.innerHTML = '<span>Web tasarım ve geliştirme</span><a href="https://olivon.com.tr/" target="_blank" rel="noopener noreferrer">Olivon</a>';
+    credit.style.cssText = 'width:min(calc(100% - 40px),1240px);margin:0 auto;padding:14px 0 2px;border-top:1px solid rgba(203,166,94,.12);display:flex;justify-content:center;align-items:center;gap:7px;color:#766b62;font-size:10px;letter-spacing:.04em;text-align:center;';
+    const link = credit.querySelector('a');
+    if (link) link.style.cssText = 'color:#bda46f;font-weight:800;letter-spacing:.08em;text-transform:uppercase;';
+    footer.appendChild(credit);
+  }
 });
