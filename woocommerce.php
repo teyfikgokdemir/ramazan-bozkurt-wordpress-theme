@@ -1,10 +1,10 @@
 <?php get_header(); ?>
 <section class="rb-page-hero rb-page-hero--shop">
   <div class="rb-container">
-    <div class="rb-eyebrow">Ramazan Bozkurt Et Ürünleri</div>
+    <div class="rb-eyebrow">Ramazan Bozkurt Et ve Et Mamulleri</div>
     <?php if (function_exists('is_shop') && is_shop()) : ?>
       <h1>Kayseri’nin geleneksel lezzetleri</h1>
-      <p>Pastırma, sucuk, kavurma ve mantı ürünlerini inceleyin; ürün detaylarına, fiyatlara ve sipariş seçeneklerine ulaşın.</p>
+      <p>Pastırma, sucuk, kavurma ve mantı ürünlerini inceleyin; güncel fiyatlara, gramajlara ve sipariş seçeneklerine ulaşın. Düzenli ve toplu alımlarda işletmenize özel teklif isteyin.</p>
     <?php elseif (is_product_category()) : ?>
       <h1><?php single_term_title(); ?></h1>
       <?php $term = get_queried_object(); if ($term && !empty($term->description)) : ?><p><?php echo esc_html(wp_strip_all_tags($term->description)); ?></p><?php endif; ?>
