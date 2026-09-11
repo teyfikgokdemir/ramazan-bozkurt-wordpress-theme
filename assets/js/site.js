@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     nav.querySelectorAll('.menu-item-has-children.is-submenu-open').forEach(function (item) {
       item.classList.remove('is-submenu-open');
       const button = item.querySelector(':scope > .rb-submenu-toggle');
-      if (button) button.setAttribute('aria-expanded', 'false');
+      if (button) {
+        button.setAttribute('aria-expanded', 'false');
+        const parentLink = item.querySelector(':scope > a');
+        if (parentLink) button.setAttribute('aria-label', parentLink.textContent.trim() + ' alt menüsünü aç');
+      }
     });
   }
 
@@ -42,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const setOpen = function (open) {
         item.classList.toggle('is-submenu-open', open);
         submenuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        submenuToggle.setAttribute('aria-label', link.textContent.trim() + (open ? ' alt menüsünü kapat' : ' alt menüsünü aç'));
       };
 
       submenuToggle.addEventListener('click', function (event) {
