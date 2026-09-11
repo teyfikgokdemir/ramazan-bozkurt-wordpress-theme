@@ -4,13 +4,10 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php wp_head(); ?>
-  <?php
-  $rb_favicon = rb_media_first(['ramazan-bozkurt-et-urunleri-kayseri-logo','ramazan-bozkurt-et-urunleri-kayseri-logo-1']);
-  if ($rb_favicon) : ?>
-    <link rel="icon" href="<?php echo esc_url($rb_favicon); ?>" type="image/png">
-    <link rel="shortcut icon" href="<?php echo esc_url($rb_favicon); ?>" type="image/png">
-    <link rel="apple-touch-icon" href="<?php echo esc_url($rb_favicon); ?>">
-  <?php endif; ?>
+  <?php $rb_favicon = get_template_directory_uri() . '/assets/images/favicon-rb.svg'; ?>
+  <link rel="icon" href="<?php echo esc_url($rb_favicon); ?>" type="image/svg+xml">
+  <link rel="shortcut icon" href="<?php echo esc_url($rb_favicon); ?>" type="image/svg+xml">
+  <link rel="mask-icon" href="<?php echo esc_url($rb_favicon); ?>" color="#FF6F61">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale-landing.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
