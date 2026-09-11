@@ -29,11 +29,10 @@ add_action('admin_init', 'rb_assign_cemensiz_product_image_v1', 190);
 
 /**
  * Confirmed from the live REST API on 2026-09-11:
- * - Product 81 = Sırt Pastırma; its correct main image is attachment 47.
- * - Product 124 = Antrikot Pastırma; its correct main image is attachment 48.
+ * - Product 81 = Sırt Pastırma; correct main image attachment 47.
+ * - Product 124 = Antrikot Pastırma; correct main image attachment 48.
  *
- * Apply directly by IDs so media slug matching and previous migration flags
- * cannot reverse or block the correction.
+ * Keep this migration out of frontend rendering. It runs once from wp-admin.
  */
 function rb_fix_sirt_antrikot_featured_images_v2() {
     if (get_option('rb_fix_sirt_antrikot_featured_images_v2')) { return; }
@@ -54,8 +53,4 @@ function rb_fix_sirt_antrikot_featured_images_v2() {
 
     update_option('rb_fix_sirt_antrikot_featured_images_v2', 1);
 }
-
-/* This file is loaded by the front-end header as well as during normal site use,
- * so execute immediately once. This avoids relying on admin_init for the repair.
- */
-rb_fix_sirt_antrikot_featured_images_v2();
+add_action('admin_init', 'rb_fix_sirt_antrikot_featured_images_v2', 205);
