@@ -166,17 +166,16 @@ function rb_seed_premium_demo_v3() {
             ],
             'kayseri-mantisi-500-g' => [
                 'name' => 'Kayseri Mantısı 500 g',
-                'price' => '350',
+                'price' => '340',
                 'cat' => 'manti',
-                'short' => 'Kayseri mutfağının simge lezzetlerinden mantı, 500 g paket seçeneğiyle. Perakende sipariş ve işletmelere özel toplu alım seçenekleri bulunur.',
-                'content' => '<h2>Kayseri Mantısı 500 g</h2><p>Kayseri mantısı; yoğurt, sarımsak ve tercihe göre sos eşliğinde sunulan, şehrin en bilinen geleneksel lezzetlerinden biridir. 500 g paket, aile sofraları ve pratik hazırlık için uygun bir seçenektir.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 500 g</li><li>Ürün grubu: Mantı</li><li>Perakende satışa uygundur</li><li>Restoran ve işletme alımlarında toptan teklif alınabilir</li></ul><h3>Pişirme ve saklama</h3><p>Pişirme süresi ve saklama koşulları için ürün ambalajındaki talimatları takip ediniz.</p>',
+                'short' => 'Kayseri mutfağının klasiklerinden mantı. 500 g paket seçeneğiyle pratik servis için sunulur; işletmelere toptan sipariş desteği verilir.',
+                'content' => '<h2>Kayseri Mantısı 500 g</h2><p>Kayseri mantısı, geleneksel sofra kültürünün öne çıkan yemeklerinden biridir. 500 g paket seçeneği; evde pratik hazırlık ve porsiyon planlaması için uygundur.</p><h3>Ürün bilgisi</h3><ul><li>Net miktar: 500 g</li><li>Ürün grubu: Mantı</li><li>Perakende satışa uygundur</li><li>Toplu sipariş ve kurumsal tedarik talebi alınabilir</li></ul><h3>Pişirme ve saklama</h3><p>Ürün paketindeki pişirme, muhafaza ve tüketim talimatlarını takip ediniz.</p>',
                 'images' => ['ramazan-bozkurt-kayseri-mantisi-geleneksel','ramazan-bozkurt-kayseri-mantisi-paket','ramazan-bozkurt-kayseri-mantisi-el-yapimi'],
             ],
         ];
 
         foreach ($product_data as $slug => $data) {
-            $existing = get_page_by_path($slug, OBJECT, 'product');
-            if ($existing) { continue; }
+            if (get_page_by_path($slug, OBJECT, 'product')) { continue; }
             $product = new WC_Product_Simple();
             $product->set_name($data['name']);
             $product->set_slug($slug);
@@ -266,3 +265,5 @@ require_once get_template_directory() . '/inc/delivery-setup.php';
 require_once get_template_directory() . '/inc/commerce-config.php';
 require_once get_template_directory() . '/inc/product-experience.php';
 require_once get_template_directory() . '/inc/navigation-setup.php';
+require_once get_template_directory() . '/inc/seo-final.php';
+require_once get_template_directory() . '/inc/ai-discovery.php';
