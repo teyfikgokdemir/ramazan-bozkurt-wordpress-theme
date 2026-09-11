@@ -31,7 +31,7 @@ $rb_whatsapp_url = 'https://wa.me/' . $rb_whatsapp_phone . '?text=' . rawurlenco
     <div class="site-footer__brand">
       <strong><?php bloginfo('name'); ?></strong>
       <p>Kayseri’nin geleneksel pastırma, sucuk, kavurma ve mantı lezzetlerini perakende ve toptan satışla buluşturuyoruz.</p>
-      <p class="rb-footer-company">Ramazan Bozkurt<br>Süleymanlı Mah. 6952. Sk. No: 47 Talas / Kayseri<br>Erciyes Vergi Dairesi · VKN 1850818784<br><a href="tel:<?php echo esc_attr($rb_phone_tel); ?>"><?php echo esc_html($rb_phone_display); ?></a></p>
+      <p class="rb-footer-company">Ramazan Bozkurt<br>Süleymanlı Mah. Talas / Kayseri<br><a href="tel:<?php echo esc_attr($rb_phone_tel); ?>"><?php echo esc_html($rb_phone_display); ?></a></p>
     </div>
     <div>
       <h2>Blog</h2>
