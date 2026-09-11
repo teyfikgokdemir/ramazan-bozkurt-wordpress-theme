@@ -27,9 +27,9 @@ function rb_content_visual_map() {
         'kayseri-sucugu-nasil-pisirilir' => [
             'alt' => 'Pişirmeye hazır Kayseri sucuğu dilimleri ve sucuk sunumu',
             'media' => [
-                'ramazan-bozkurt-kayseri-sucugu-premium-sunum',
-                'ramazan-bozkurt-kayseri-sucugu-urun-gorseli',
                 'ramazan-bozkurt-kayseri-parmak-sucuk',
+                'ramazan-bozkurt-kayseri-sucugu-urun-gorseli',
+                'ramazan-bozkurt-kayseri-sucugu-premium-sunum',
             ],
         ],
         'kavurmali-pilav-tarifi' => [
@@ -75,6 +75,22 @@ function rb_content_visual_id_for_post($post_id) {
     $slug = (string) $post->post_name;
     if (empty($map[$slug]['media'])) { return 0; }
 
+    /*
+     * This specific article previously resolved to a wrongly labelled media
+     * attachment. Prefer the real WooCommerce sucuk product image first, since
+     * that image is already verified on the product page.
+     */
+    if ($slug === 'kayseri-sucugu-nasil-pisirilir' && class_exists('WC_Product')) {
+        $product_post = get_page_by_path('kayseri-sucugu-500-g', OBJECT, 'product');
+        if ($product_post) {
+            $product = wc_get_product($product_post->ID);
+            if ($product) {
+                $product_image_id = (int) $product->get_image_id();
+                if ($product_image_id) { return $product_image_id; }
+            }
+        }
+    }
+
     foreach ($map[$slug]['media'] as $media_slug) {
         $attachment = get_page_by_path($media_slug, OBJECT, 'attachment');
         if ($attachment) { return (int) $attachment->ID; }
@@ -111,8 +127,8 @@ add_filter('post_thumbnail_id', 'rb_filter_content_thumbnail_id', 30, 2);
  * One-time repair of already-created posts. This is intentionally a new
  * versioned migration so it also fixes posts seeded before this audit existed.
  */
-function rb_repair_content_visuals_v2() {
-    if (get_option('rb_content_visuals_v2')) { return; }
+function rb_repair_content_visuals_v3() {
+    if (get_option('rb_content_visuals_v3')) { return; }
 
     foreach (rb_content_visual_map() as $slug => $config) {
         $post = get_page_by_path($slug, OBJECT, 'post');
@@ -128,6 +144,6 @@ function rb_repair_content_visuals_v2() {
         }
     }
 
-    update_option('rb_content_visuals_v2', 1);
+    update_option('rb_content_visuals_v3', 1);
 }
-add_action('admin_init', 'rb_repair_content_visuals_v2', 120);
+add_action('admin_init', 'rb_repair_content_visuals_v3', 120);
