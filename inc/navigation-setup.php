@@ -15,6 +15,9 @@ if (file_exists($ai_discovery)) { require_once $ai_discovery; }
 $content_hub = get_template_directory() . '/inc/content-hub.php';
 if (file_exists($content_hub)) { require_once $content_hub; }
 
+$content_visual_audit = get_template_directory() . '/inc/content-visual-audit.php';
+if (file_exists($content_visual_audit)) { require_once $content_visual_audit; }
+
 function rb_navigation_setup_v1() {
     if (get_option('rb_navigation_setup_v1')) { return; }
 
