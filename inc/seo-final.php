@@ -58,7 +58,7 @@ function rb_final_meta_description() {
 }
 
 function rb_final_social_image() {
-    return 'https://ramazanbozkurt.com/wp-content/uploads/2026/09/ramazan-bozkurt-et-urunleri-kayseri-logo-1.webp';
+    return 'https://ramazanbozkurt.com/wp-content/uploads/2026/09/ramazan-bozkurt-et-urunleri-kayseri-logo-1.webp?v=20260911-2';
 }
 
 function rb_final_output_meta() {
@@ -77,7 +77,10 @@ function rb_final_output_meta() {
     echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
     if ($description) { echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n"; }
     if ($url) { echo '<meta property="og:url" content="' . esc_url($url) . '">' . "\n"; }
-    if ($image) { echo '<meta property="og:image" content="' . esc_url($image) . '">' . "\n"; }
+    if ($image) {
+        echo '<meta property="og:image" content="' . esc_url($image) . '">' . "\n";
+        echo '<meta property="og:image:secure_url" content="' . esc_url($image) . '">' . "\n";
+    }
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($title) . '">' . "\n";
     if ($description) { echo '<meta name="twitter:description" content="' . esc_attr($description) . '">' . "\n"; }
