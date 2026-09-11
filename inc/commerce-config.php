@@ -89,6 +89,45 @@ function rb_owner_catalog_force_v3() {
 function rb_owner_catalog_v3_migration() { if (get_option('rb_owner_catalog_v3') || !class_exists('WooCommerce')) { return; } rb_owner_catalog_force_v3(); update_option('rb_owner_catalog_v3', 1); if (function_exists('wc_delete_product_transients')) { wc_delete_product_transients(); } flush_rewrite_rules(false); }
 add_action('admin_init', 'rb_owner_catalog_v3_migration', 180);
 
+/* Ramazan Bey correction: Sırt and Antrikot image sets were assigned to the wrong products. */
+function rb_swap_sirt_antrikot_images_v1() {
+    if (get_option('rb_swap_sirt_antrikot_images_v1')) { return; }
+    if (!class_exists('WooCommerce')) { return; }
+
+    $sirt = get_page_by_path('kayseri-pastirmasi-250-g', OBJECT, 'product');
+    $antrikot = get_page_by_path('antrikot-pastirma', OBJECT, 'product');
+    if (!$sirt || !$antrikot) { return; }
+
+    $sirt_images = [
+        'ramazan-bozkurt-kayseri-pastirmasi-premium-sunum',
+        'ramazan-bozkurt-pastirma-makro-detay',
+        'ramazan-bozkurt-pastirma-dilim-detay-1',
+    ];
+    $antrikot_images = [
+        'ramazan-bozkurt-kayseri-pastirmasi-dilimli-sunum',
+        'ramazan-bozkurt-pastirma-kesit-detay',
+        'ramazan-bozkurt-pastirma-dilim-detay',
+    ];
+
+    $apply_images = function($product_id, array $slugs) {
+        $main = rb_media_id_first([$slugs[0]]);
+        if ($main) { set_post_thumbnail($product_id, $main); }
+        $gallery = [];
+        foreach (array_slice($slugs, 1) as $slug) {
+            $image_id = rb_media_id_first([$slug]);
+            if ($image_id && $image_id !== $main) { $gallery[] = $image_id; }
+        }
+        update_post_meta($product_id, '_product_image_gallery', implode(',', $gallery));
+        clean_post_cache($product_id);
+        if (function_exists('wc_delete_product_transients')) { wc_delete_product_transients($product_id); }
+    };
+
+    $apply_images((int)$sirt->ID, $sirt_images);
+    $apply_images((int)$antrikot->ID, $antrikot_images);
+    update_option('rb_swap_sirt_antrikot_images_v1', 1);
+}
+add_action('admin_init', 'rb_swap_sirt_antrikot_images_v1', 195);
+
 /* SEO + AI discovery are loaded here because this file is already required by functions.php. */
 $rb_seo_final_file = get_template_directory() . '/inc/seo-final.php';
 if (file_exists($rb_seo_final_file)) { require_once $rb_seo_final_file; }
