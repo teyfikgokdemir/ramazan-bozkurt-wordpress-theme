@@ -84,3 +84,8 @@ function rb_set_all_product_stock_2000_v1() {
     update_option('rb_set_all_product_stock_2000_v1', 1);
 }
 add_action('admin_init', 'rb_set_all_product_stock_2000_v1', 220);
+
+$rb_final_delivery_file = get_template_directory() . '/inc/final-delivery.php';
+if (file_exists($rb_final_delivery_file)) {
+    require_once $rb_final_delivery_file;
+}
