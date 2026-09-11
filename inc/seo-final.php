@@ -58,14 +58,7 @@ function rb_final_meta_description() {
 }
 
 function rb_final_social_image() {
-    if (is_singular() && has_post_thumbnail(get_queried_object_id())) {
-        return get_the_post_thumbnail_url(get_queried_object_id(), 'full');
-    }
-    return rb_media_first([
-        'ramazan-bozkurt-kayseri-aile-sofrasi-banner',
-        'ramazan-bozkurt-kayseri-pastirma-sucuk-manti-kavurma',
-        'ramazan-bozkurt-kayseri-geleneksel-lezzet-banner'
-    ]);
+    return 'https://ramazanbozkurt.com/wp-content/uploads/2026/09/ramazan-bozkurt-et-urunleri-kayseri-logo-1.webp';
 }
 
 function rb_final_output_meta() {
