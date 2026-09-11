@@ -88,3 +88,9 @@ function rb_owner_catalog_force_v3() {
 
 function rb_owner_catalog_v3_migration() { if (get_option('rb_owner_catalog_v3') || !class_exists('WooCommerce')) { return; } rb_owner_catalog_force_v3(); update_option('rb_owner_catalog_v3', 1); if (function_exists('wc_delete_product_transients')) { wc_delete_product_transients(); } flush_rewrite_rules(false); }
 add_action('admin_init', 'rb_owner_catalog_v3_migration', 180);
+
+/* SEO + AI discovery are loaded here because this file is already required by functions.php. */
+$rb_seo_final_file = get_template_directory() . '/inc/seo-final.php';
+if (file_exists($rb_seo_final_file)) { require_once $rb_seo_final_file; }
+$rb_ai_discovery_file = get_template_directory() . '/inc/ai-discovery.php';
+if (file_exists($rb_ai_discovery_file)) { require_once $rb_ai_discovery_file; }
