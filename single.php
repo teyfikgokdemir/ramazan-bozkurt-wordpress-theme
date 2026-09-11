@@ -74,35 +74,49 @@ while (have_posts()) : the_post();
     <div class="rb-section__head"><span class="rb-eyebrow">Okumaya devam edin</span><h2><?php echo $is_recipe ? 'Diğer tarifler' : 'Diğer yazılar'; ?></h2></div>
     <div class="rb-blog-grid rb-blog-grid--compact">
       <?php
-      $query_args = [
-          'post_type'=>'post','post_status'=>'publish','posts_per_page'=>3,
-          'post__not_in'=>[$current_id],'orderby'=>'date','order'=>'DESC','ignore_sticky_posts'=>true,
+      $related_args = [
+          'post_type' => 'post',
+          'post_status' => 'publish',
+          'numberposts' => 3,
+          'exclude' => [$current_id],
+          'orderby' => 'date',
+          'order' => 'DESC',
+          'suppress_filters' => true,
       ];
-      if ($primary_cat) { $query_args['cat'] = (int) $primary_cat->term_id; }
-      $more = new WP_Query($query_args);
-      if ($more->have_posts()) :
-          while ($more->have_posts()) : $more->the_post();
-              $thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
+      if ($primary_cat) { $related_args['category'] = (int) $primary_cat->term_id; }
+      $related_posts = get_posts($related_args);
+      if ($related_posts) :
+          foreach ($related_posts as $related_post) :
+              $related_id = (int) $related_post->ID;
+              $related_title = $related_post->post_title;
+              $related_url = get_permalink($related_id);
+              $related_date = mysql2date('d F Y', $related_post->post_date);
+              $raw_excerpt = trim((string) $related_post->post_excerpt);
+              if ($raw_excerpt === '') {
+                  $raw_excerpt = wp_strip_all_tags(strip_shortcodes((string) $related_post->post_content));
+              }
+              $related_excerpt = wp_trim_words($raw_excerpt, 18, '…');
+              $thumb = '';
+              $thumb_id = (int) get_post_thumbnail_id($related_id);
+              if ($thumb_id) { $thumb = wp_get_attachment_image_url($thumb_id, 'medium_large'); }
               if (!$thumb) {
-                  $related_cats = get_the_category();
-                  $related_recipe = $related_cats && $related_cats[0]->slug === 'yemek-tarifleri';
-                  $thumb = rb_media_first($related_recipe
+                  $thumb = rb_media_first($is_recipe
                       ? ['ramazan-bozkurt-kayseri-mantisi-paket','ramazan-bozkurt-kayseri-mantisi-el-yapimi','ramazan-bozkurt-kayseri-aile-manti-banner']
                       : ['ramazan-bozkurt-kayseri-pastirmasi-dilimli-sunum','ramazan-bozkurt-kayseri-sucugu-premium-sunum','ramazan-bozkurt-kayseri-geleneksel-lezzet-banner']);
               }
       ?>
         <article class="rb-blog-card">
-          <a class="rb-blog-card__media" href="<?php the_permalink(); ?>"><?php if ($thumb) : ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy"><?php endif; ?></a>
+          <a class="rb-blog-card__media" href="<?php echo esc_url($related_url); ?>"><?php if ($thumb) : ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($related_title); ?>" loading="lazy"><?php endif; ?></a>
           <div class="rb-blog-card__body">
-            <div class="rb-blog-card__meta"><?php echo esc_html(get_the_date('d F Y')); ?></div>
-            <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-            <p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 18, '…')); ?></p>
-            <a class="rb-text-link" href="<?php the_permalink(); ?>">Oku →</a>
+            <div class="rb-blog-card__meta"><?php echo esc_html($related_date); ?></div>
+            <h3><a href="<?php echo esc_url($related_url); ?>"><?php echo esc_html($related_title); ?></a></h3>
+            <?php if ($related_excerpt !== '') : ?><p><?php echo esc_html($related_excerpt); ?></p><?php endif; ?>
+            <a class="rb-text-link" href="<?php echo esc_url($related_url); ?>">Oku →</a>
           </div>
         </article>
-      <?php endwhile; else : ?>
+      <?php endforeach; else : ?>
         <p class="rb-article-more__empty">Bu bölümde henüz başka içerik bulunmuyor.</p>
-      <?php endif; wp_reset_postdata(); ?>
+      <?php endif; ?>
     </div>
   </div>
 </section>
