@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!toggle || !nav) return;
     nav.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
+    nav.querySelectorAll('.menu-item-has-children.is-submenu-open').forEach(function (item) {
+      item.classList.remove('is-submenu-open');
+      const button = item.querySelector(':scope > .rb-submenu-toggle');
+      if (button) button.setAttribute('aria-expanded', 'false');
+    });
   }
 
   if (toggle && nav) {
@@ -15,21 +20,46 @@ document.addEventListener('DOMContentLoaded', function () {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
-    nav.querySelectorAll('.menu-item-has-children > a').forEach(function (link) {
+    nav.querySelectorAll('.menu-item-has-children').forEach(function (item, index) {
+      const link = item.querySelector(':scope > a');
+      const submenu = item.querySelector(':scope > .sub-menu');
+      if (!link || !submenu) return;
+
+      if (!submenu.id) submenu.id = 'rb-submenu-' + index;
+
+      let submenuToggle = item.querySelector(':scope > .rb-submenu-toggle');
+      if (!submenuToggle) {
+        submenuToggle = document.createElement('button');
+        submenuToggle.type = 'button';
+        submenuToggle.className = 'rb-submenu-toggle';
+        submenuToggle.setAttribute('aria-label', link.textContent.trim() + ' alt menüsünü aç');
+        submenuToggle.setAttribute('aria-controls', submenu.id);
+        submenuToggle.setAttribute('aria-expanded', 'false');
+        submenuToggle.innerHTML = '<span aria-hidden="true"></span>';
+        link.insertAdjacentElement('afterend', submenuToggle);
+      }
+
+      const setOpen = function (open) {
+        item.classList.toggle('is-submenu-open', open);
+        submenuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      submenuToggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (window.innerWidth > 880) return;
+        setOpen(!item.classList.contains('is-submenu-open'));
+      });
+
       link.addEventListener('click', function (event) {
         if (window.innerWidth > 880) return;
-        const parent = link.parentElement;
-        if (!parent.classList.contains('is-submenu-open')) {
-          event.preventDefault();
-          parent.classList.add('is-submenu-open');
-        }
+        event.preventDefault();
+        setOpen(!item.classList.contains('is-submenu-open'));
       });
     });
 
-    nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        if (window.innerWidth > 880 || !link.parentElement.classList.contains('menu-item-has-children')) closeMenu();
-      });
+    nav.querySelectorAll('.sub-menu a, .menu > li:not(.menu-item-has-children) > a').forEach(function (link) {
+      link.addEventListener('click', closeMenu);
     });
 
     document.addEventListener('click', function (event) {
@@ -51,18 +81,28 @@ document.addEventListener('DOMContentLoaded', function () {
   const scrollTopButton = document.querySelector('[data-scroll-top]');
   if (scrollTopButton) {
     let scrollHideTimer = null;
+    let lastScrollY = window.scrollY;
     const hideScrollButton = function () { scrollTopButton.classList.remove('is-visible'); };
     const showScrollButton = function () {
-      if (window.scrollY < 260) { hideScrollButton(); return; }
-      scrollTopButton.classList.add('is-visible');
-      window.clearTimeout(scrollHideTimer);
-      scrollHideTimer = window.setTimeout(hideScrollButton, 900);
+      const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+      if (currentY < 220) {
+        hideScrollButton();
+        lastScrollY = currentY;
+        return;
+      }
+      if (Math.abs(currentY - lastScrollY) >= 2) {
+        scrollTopButton.classList.add('is-visible');
+        window.clearTimeout(scrollHideTimer);
+        scrollHideTimer = window.setTimeout(hideScrollButton, 1800);
+      }
+      lastScrollY = currentY;
     };
     scrollTopButton.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       hideScrollButton();
     });
     window.addEventListener('scroll', showScrollButton, { passive: true });
+    window.addEventListener('touchmove', showScrollButton, { passive: true });
     hideScrollButton();
   }
 
@@ -82,17 +122,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* Premium variation pills replace the unreliable native dropdown visually.
-     The original WooCommerce select stays in the DOM and receives the selected value. */
   document.querySelectorAll('.single-product form.variations_form table.variations select').forEach(function (select) {
     if (select.dataset.rbEnhanced === '1') return;
     select.dataset.rbEnhanced = '1';
-
     const wrap = document.createElement('div');
     wrap.className = 'rb-variation-pills';
     wrap.setAttribute('role', 'group');
     wrap.setAttribute('aria-label', 'Gramaj seçimi');
-
     Array.from(select.options).forEach(function (option) {
       if (!option.value) return;
       const button = document.createElement('button');
@@ -108,10 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       wrap.appendChild(button);
     });
-
     select.insertAdjacentElement('afterend', wrap);
     select.classList.add('rb-native-variation-select');
-
     const sync = function () {
       wrap.querySelectorAll('.rb-variation-pill').forEach(function (button) {
         button.classList.toggle('is-active', button.dataset.value === select.value);
