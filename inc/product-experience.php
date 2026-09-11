@@ -90,7 +90,7 @@ function rb_product_tabs_compact_css() {
       .rb-product-description-layout{display:block!important}
       .rb-product-description-copy{max-width:900px!important}
 
-      /* Related/other product cards: keep every CTA on the same baseline. */
+      /* Related/other product cards: compact, centered CTAs on one baseline. */
       .rb-other-products ul.products{align-items:stretch!important}
       .rb-other-products ul.products li.product{height:100%!important;display:flex!important;flex-direction:column!important}
       .rb-other-products ul.products li.product>a.woocommerce-LoopProduct-link{
@@ -99,9 +99,9 @@ function rb_product_tabs_compact_css() {
       .rb-other-products ul.products li.product .price{margin-bottom:0!important}
       .rb-other-products ul.products li.product .button{
         align-self:center!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
-        width:calc(100% - 40px)!important;min-width:0!important;max-width:none!important;min-height:48px!important;
-        margin:16px 20px 0!important;padding:0 14px!important;text-align:center!important;white-space:nowrap!important;
-        line-height:1.1!important
+        width:76%!important;min-width:0!important;max-width:170px!important;min-height:40px!important;
+        margin:14px auto 0!important;padding:0 12px!important;text-align:center!important;white-space:nowrap!important;
+        font-size:11px!important;line-height:1!important;font-weight:800!important;
       }
 
       @media(max-width:700px){
@@ -111,7 +111,7 @@ function rb_product_tabs_compact_css() {
         .woocommerce div.product .woocommerce-tabs .panel h2{font-size:24px!important}
         .woocommerce div.product .woocommerce-tabs .panel h3{font-size:18px!important}
         .woocommerce div.product .woocommerce-tabs .panel p{font-size:14px!important;line-height:1.7!important}
-        .rb-other-products ul.products li.product .button{min-height:46px!important;font-size:12px!important}
+        .rb-other-products ul.products li.product .button{width:72%!important;max-width:156px!important;min-height:38px!important;font-size:10.5px!important}
       }
     </style>
     <?php
