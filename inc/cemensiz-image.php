@@ -28,32 +28,15 @@ function rb_assign_cemensiz_product_image_v1() {
 add_action('admin_init', 'rb_assign_cemensiz_product_image_v1', 190);
 
 /**
- * Confirmed from the live REST API on 2026-09-11:
- * - Product 81 = Sırt Pastırma; correct main image attachment 47.
- * - Product 124 = Antrikot Pastırma; correct main image attachment 48.
- *
- * Keep this migration out of frontend rendering. It runs once from wp-admin.
+ * The Sırt and Antrikot images were finalized manually in WooCommerce.
+ * Mark the old automatic swap jobs complete before they can run again so
+ * the client's final main images and galleries are never overwritten.
  */
-function rb_fix_sirt_antrikot_featured_images_v2() {
-    if (get_option('rb_fix_sirt_antrikot_featured_images_v2')) { return; }
-
-    $sirt = get_post(81);
-    $antrikot = get_post(124);
-    if (!$sirt || !$antrikot || $sirt->post_type !== 'product' || $antrikot->post_type !== 'product') { return; }
-
-    set_post_thumbnail(81, 47);
-    set_post_thumbnail(124, 48);
-
-    clean_post_cache(81);
-    clean_post_cache(124);
-    if (function_exists('wc_delete_product_transients')) {
-        wc_delete_product_transients(81);
-        wc_delete_product_transients(124);
-    }
-
+function rb_lock_manual_pastirma_images_v1() {
+    update_option('rb_swap_sirt_antrikot_images_v1', 1);
     update_option('rb_fix_sirt_antrikot_featured_images_v2', 1);
 }
-add_action('admin_init', 'rb_fix_sirt_antrikot_featured_images_v2', 205);
+add_action('admin_init', 'rb_lock_manual_pastirma_images_v1', 150);
 
 /**
  * Owner request: set every sellable WooCommerce stock quantity to 2000.
