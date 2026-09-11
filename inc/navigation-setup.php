@@ -5,6 +5,13 @@
  */
 defined('ABSPATH') || exit;
 
+/* These layers must load during the theme bootstrap, before template_redirect/wp_head. */
+$seo_final = get_template_directory() . '/inc/seo-final.php';
+if (file_exists($seo_final)) { require_once $seo_final; }
+
+$ai_discovery = get_template_directory() . '/inc/ai-discovery.php';
+if (file_exists($ai_discovery)) { require_once $ai_discovery; }
+
 $content_hub = get_template_directory() . '/inc/content-hub.php';
 if (file_exists($content_hub)) { require_once $content_hub; }
 
