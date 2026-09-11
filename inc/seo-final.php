@@ -98,6 +98,7 @@ function rb_final_output_schema() {
     $phone = function_exists('rb_theme_setting') ? rb_theme_setting('phone', '+90 539 824 82 95') : '+90 539 824 82 95';
     $url = rb_final_current_url();
     $description = wp_trim_words(trim(wp_strip_all_tags(rb_final_meta_description())), 30, '');
+    $image = rb_final_social_image();
 
     $organization = [
         '@type' => 'Organization',
@@ -151,6 +152,53 @@ function rb_final_output_schema() {
         ];
     }
 
+    if (is_singular('post')) {
+        $post_id = get_queried_object_id();
+        $article = [
+            '@type' => 'BlogPosting',
+            '@id' => $url . '#article',
+            'headline' => get_the_title($post_id),
+            'description' => $description,
+            'mainEntityOfPage' => ['@id' => $url . '#webpage'],
+            'datePublished' => get_the_date(DATE_W3C, $post_id),
+            'dateModified' => get_the_modified_date(DATE_W3C, $post_id),
+            'inLanguage' => 'tr-TR',
+            'author' => ['@type'=>'Organization','@id'=>home_url('/#organization'),'name'=>'Ramazan Bozkurt Et ve Et Mamulleri'],
+            'publisher' => ['@id'=>home_url('/#organization')],
+        ];
+        if ($image) { $article['image'] = $image; }
+        $cats = get_the_category($post_id);
+        if ($cats) { $article['articleSection'] = wp_list_pluck($cats, 'name'); }
+        $graph[] = $article;
+    }
+
+    if ($url && (is_singular() || is_tax('product_cat'))) {
+        $items = [[
+            '@type'=>'ListItem','position'=>1,'name'=>'Ana Sayfa','item'=>home_url('/')
+        ]];
+        if (is_singular('post')) {
+            $cats = get_the_category();
+            $is_recipe = false;
+            foreach ($cats as $cat) { if ($cat->slug === 'yemek-tarifleri') { $is_recipe = true; break; } }
+            $hub_url = $is_recipe ? home_url('/yemek-tarifleri/') : home_url('/blog/');
+            $hub_name = $is_recipe ? 'Yemek Tarifleri' : 'Blog';
+            $items[] = ['@type'=>'ListItem','position'=>2,'name'=>$hub_name,'item'=>$hub_url];
+            $items[] = ['@type'=>'ListItem','position'=>3,'name'=>get_the_title(),'item'=>$url];
+        } elseif (is_singular('product')) {
+            $shop = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler/');
+            $items[] = ['@type'=>'ListItem','position'=>2,'name'=>'Ürünler','item'=>$shop];
+            $items[] = ['@type'=>'ListItem','position'=>3,'name'=>get_the_title(),'item'=>$url];
+        } elseif (is_tax('product_cat')) {
+            $shop = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/urunler/');
+            $term = get_queried_object();
+            $items[] = ['@type'=>'ListItem','position'=>2,'name'=>'Ürünler','item'=>$shop];
+            $items[] = ['@type'=>'ListItem','position'=>3,'name'=>$term ? $term->name : 'Kategori','item'=>$url];
+        } else {
+            $items[] = ['@type'=>'ListItem','position'=>2,'name'=>wp_get_document_title(),'item'=>$url];
+        }
+        $graph[] = ['@type'=>'BreadcrumbList','@id'=>$url.'#breadcrumb','itemListElement'=>$items];
+    }
+
     if (is_page('sikca-sorulan-sorular')) {
         $graph[] = [
             '@type'=>'FAQPage',
@@ -192,6 +240,23 @@ function rb_final_robots_txt($output, $public) {
     return implode("\n", $lines) . "\n";
 }
 add_filter('robots_txt', 'rb_final_robots_txt', 20, 2);
+
+function rb_final_sitemap_exclusions($args, $post_type) {
+    if ($post_type !== 'page') { return $args; }
+    $exclude = [];
+    if (function_exists('wc_get_page_id')) {
+        foreach (['cart','checkout','myaccount'] as $page_key) {
+            $id = (int) wc_get_page_id($page_key);
+            if ($id > 0) { $exclude[] = $id; }
+        }
+    }
+    if ($exclude) {
+        $existing = isset($args['post__not_in']) && is_array($args['post__not_in']) ? $args['post__not_in'] : [];
+        $args['post__not_in'] = array_values(array_unique(array_merge($existing, $exclude)));
+    }
+    return $args;
+}
+add_filter('wp_sitemaps_posts_query_args', 'rb_final_sitemap_exclusions', 20, 2);
 
 /* Replace the earlier lightweight fallback after functions.php has registered it. */
 if (function_exists('rb_output_seo_meta')) { remove_action('wp_head', 'rb_output_seo_meta', 2); }
