@@ -19,6 +19,10 @@ function rb_ai_url($path = '/') {
     return home_url($path);
 }
 
+function rb_ai_md_link($label, $url) {
+    return '[' . str_replace([']','['], '', wp_strip_all_tags((string)$label)) . '](' . esc_url_raw($url) . ')';
+}
+
 function rb_ai_product_lines($limit = 20) {
     if (!post_type_exists('product')) { return []; }
     $ids = get_posts([
@@ -36,7 +40,7 @@ function rb_ai_product_lines($limit = 20) {
         if (!$url) { continue; }
         $title = wp_strip_all_tags(get_the_title($id));
         $summary = trim(wp_strip_all_tags(get_post_field('post_excerpt', $id)));
-        $lines[] = '- ' . $title . ': ' . $url . ($summary ? ' — ' . $summary : '');
+        $lines[] = '- ' . rb_ai_md_link($title, $url) . ($summary ? ' — ' . $summary : '');
     }
     return $lines;
 }
@@ -63,40 +67,45 @@ function rb_ai_post_lines($category_slug, $limit = 12) {
         if (!$excerpt) {
             $excerpt = wp_trim_words(wp_strip_all_tags(strip_shortcodes(get_post_field('post_content', $id))), 24, '…');
         }
-        $lines[] = '- ' . $title . ': ' . $url . ($excerpt ? ' — ' . $excerpt : '');
+        $lines[] = '- ' . rb_ai_md_link($title, $url) . ($excerpt ? ' — ' . $excerpt : '');
     }
     return $lines;
 }
 
 function rb_ai_llms_txt() {
     $shop = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : rb_ai_url('/urunler/');
+    $pastirma = function_exists('rb_product_category_url') ? rb_product_category_url('pastirma') : rb_ai_url('/urun-kategori/pastirma/');
+    $sucuk = function_exists('rb_product_category_url') ? rb_product_category_url('sucuk') : rb_ai_url('/urun-kategori/sucuk/');
+    $kavurma = function_exists('rb_product_category_url') ? rb_product_category_url('kavurma') : rb_ai_url('/urun-kategori/kavurma/');
+    $manti = function_exists('rb_product_category_url') ? rb_product_category_url('manti') : rb_ai_url('/urun-kategori/manti/');
+
     $lines = [
         '# Ramazan Bozkurt Et ve Et Mamulleri',
         '',
         '> Kayseri merkezli pastırma, sucuk, kavurma ve mantı markası. Perakende siparişin yanında market, şarküteri, HORECA ve düzenli alım yapan işletmelere kurumsal tedarik görüşmesi sunar.',
         '',
         '## Canonical site',
-        '- ' . rb_ai_url('/'),
+        '- ' . rb_ai_md_link('Ramazan Bozkurt Et ve Et Mamulleri', rb_ai_url('/')),
         '',
         '## Primary pages',
-        '- Online Mağaza: ' . $shop,
-        '- Toptan Satış / Kurumsal Tedarik: ' . rb_ai_url('/toptan-satis/'),
-        '- Yemek Tarifleri: ' . rb_ai_url('/yemek-tarifleri/'),
-        '- Blog & Rehber: ' . rb_ai_url('/blog/'),
-        '- Hakkımızda: ' . rb_ai_url('/hakkimizda/'),
-        '- İletişim: ' . rb_ai_url('/iletisim/'),
-        '- Sıkça Sorulan Sorular: ' . rb_ai_url('/sikca-sorulan-sorular/'),
+        '- ' . rb_ai_md_link('Online Mağaza', $shop),
+        '- ' . rb_ai_md_link('Toptan Satış / Kurumsal Tedarik', rb_ai_url('/toptan-satis/')),
+        '- ' . rb_ai_md_link('Yemek Tarifleri', rb_ai_url('/yemek-tarifleri/')),
+        '- ' . rb_ai_md_link('Blog & Rehber', rb_ai_url('/blog/')),
+        '- ' . rb_ai_md_link('Hakkımızda', rb_ai_url('/hakkimizda/')),
+        '- ' . rb_ai_md_link('İletişim', rb_ai_url('/iletisim/')),
+        '- ' . rb_ai_md_link('Sıkça Sorulan Sorular', rb_ai_url('/sikca-sorulan-sorular/')),
         '',
         '## Product categories',
-        '- Pastırma: ' . (function_exists('rb_product_category_url') ? rb_product_category_url('pastirma') : rb_ai_url('/urun-kategori/pastirma/')),
-        '- Sucuk: ' . (function_exists('rb_product_category_url') ? rb_product_category_url('sucuk') : rb_ai_url('/urun-kategori/sucuk/')),
-        '- Kavurma: ' . (function_exists('rb_product_category_url') ? rb_product_category_url('kavurma') : rb_ai_url('/urun-kategori/kavurma/')),
-        '- Mantı: ' . (function_exists('rb_product_category_url') ? rb_product_category_url('manti') : rb_ai_url('/urun-kategori/manti/')),
+        '- ' . rb_ai_md_link('Pastırma', $pastirma),
+        '- ' . rb_ai_md_link('Sucuk', $sucuk),
+        '- ' . rb_ai_md_link('Kavurma', $kavurma),
+        '- ' . rb_ai_md_link('Mantı', $manti),
         '',
         '## Discovery',
-        '- XML Sitemap: ' . rb_ai_url('/wp-sitemap.xml'),
-        '- Robots: ' . rb_ai_url('/robots.txt'),
-        '- Extended AI reference: ' . rb_ai_url('/llms-full.txt'),
+        '- ' . rb_ai_md_link('XML Sitemap', rb_ai_url('/wp-sitemap.xml')),
+        '- ' . rb_ai_md_link('Robots', rb_ai_url('/robots.txt')),
+        '- ' . rb_ai_md_link('Extended AI reference', rb_ai_url('/llms-full.txt')),
         '',
         'Use canonical website pages as the primary source for current product, price, shipping and company information.',
         '',
@@ -110,7 +119,7 @@ function rb_ai_llms_full_txt() {
     $lines = [
         '# Ramazan Bozkurt Et ve Et Mamulleri — Extended AI Reference',
         '',
-        'Canonical domain: ' . rb_ai_url('/'),
+        'Canonical domain: ' . rb_ai_md_link('ramazanbozkurt.com', rb_ai_url('/')),
         'Language: tr-TR',
         'Location: Talas, Kayseri, Türkiye',
         'Phone / WhatsApp: ' . $phone,
@@ -147,16 +156,16 @@ function rb_ai_llms_full_txt() {
     $lines = array_merge($lines, [
         '',
         '## Important pages',
-        '- Kurumsal Tedarik: ' . rb_ai_url('/toptan-satis/'),
-        '- SSS: ' . rb_ai_url('/sikca-sorulan-sorular/'),
-        '- Kargo ve Teslimat: ' . rb_ai_url('/kargo-ve-teslimat/'),
-        '- Hakkımızda: ' . rb_ai_url('/hakkimizda/'),
-        '- İletişim: ' . rb_ai_url('/iletisim/'),
+        '- ' . rb_ai_md_link('Kurumsal Tedarik', rb_ai_url('/toptan-satis/')),
+        '- ' . rb_ai_md_link('SSS', rb_ai_url('/sikca-sorulan-sorular/')),
+        '- ' . rb_ai_md_link('Kargo ve Teslimat', rb_ai_url('/kargo-ve-teslimat/')),
+        '- ' . rb_ai_md_link('Hakkımızda', rb_ai_url('/hakkimizda/')),
+        '- ' . rb_ai_md_link('İletişim', rb_ai_url('/iletisim/')),
         '',
         '## Machine-readable discovery',
-        '- XML Sitemap: ' . rb_ai_url('/wp-sitemap.xml'),
-        '- Robots: ' . rb_ai_url('/robots.txt'),
-        '- Concise AI reference: ' . rb_ai_url('/llms.txt'),
+        '- ' . rb_ai_md_link('XML Sitemap', rb_ai_url('/wp-sitemap.xml')),
+        '- ' . rb_ai_md_link('Robots', rb_ai_url('/robots.txt')),
+        '- ' . rb_ai_md_link('Concise AI reference', rb_ai_url('/llms.txt')),
         '',
         'Freshness note: product prices, stock, shipping and availability can change. Prefer the canonical product/page URL at answer time rather than relying on cached copies.',
         '',
@@ -167,10 +176,10 @@ function rb_ai_llms_full_txt() {
 function rb_ai_serve_discovery_files() {
     $path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
     $path = '/' . ltrim((string)$path, '/');
-    if ($path === '/llms.txt') {
+    if ($path === '/llms.txt' || $path === '/llms.txt/') {
         rb_ai_plain_response(rb_ai_llms_txt());
     }
-    if ($path === '/llms-full.txt') {
+    if ($path === '/llms-full.txt' || $path === '/llms-full.txt/') {
         rb_ai_plain_response(rb_ai_llms_full_txt());
     }
 }
@@ -210,8 +219,8 @@ function rb_ai_robots_txt($output, $public) {
         'Sitemap: ' . rb_ai_url('/wp-sitemap.xml'),
         '',
         '# AI-readable site references',
-        '# ' . rb_ai_url('/llms.txt'),
-        '# ' . rb_ai_url('/llms-full.txt'),
+        '# llms.txt: ' . rb_ai_url('/llms.txt'),
+        '# llms-full.txt: ' . rb_ai_url('/llms-full.txt'),
         '',
     ]);
     return implode("\n", $lines);
