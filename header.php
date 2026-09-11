@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale-landing.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
-  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <?php $rb_nav_css = get_template_directory() . '/assets/css/navigation.css'; $rb_nav_ver = file_exists($rb_nav_css) ? filemtime($rb_nav_css) : wp_get_theme()->get('Version'); ?>
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . $rb_nav_ver); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/visual-effects.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/home-compact.css?v=' . wp_get_theme()->get('Version')); ?>">
   <?php $rb_blog_css = get_template_directory() . '/assets/css/blog.css'; $rb_blog_ver = file_exists($rb_blog_css) ? filemtime($rb_blog_css) : wp_get_theme()->get('Version'); ?>
@@ -23,6 +24,55 @@
   <?php $rb_blog_detail_css = get_template_directory() . '/assets/css/blog-detail-fix.css'; $rb_blog_detail_ver = file_exists($rb_blog_detail_css) ? filemtime($rb_blog_detail_css) : wp_get_theme()->get('Version'); ?>
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/blog-detail-fix.css?v=' . $rb_blog_detail_ver); ?>">
   <script defer src="<?php echo esc_url(get_template_directory_uri() . '/assets/js/cart-progress.js?v=' . wp_get_theme()->get('Version')); ?>"></script>
+  <style>
+    @media(max-width:880px){
+      .site-nav .menu-item-has-children>.sub-menu{display:none!important;opacity:1!important;visibility:visible!important;transform:none!important;position:static!important}
+      .site-nav .menu-item-has-children.is-submenu-open>.sub-menu{display:block!important}
+      .site-nav .menu-item-has-children>a{cursor:pointer}
+    }
+    @media(max-width:700px){
+      .rb-scroll-top{right:14px!important;bottom:calc(86px + env(safe-area-inset-bottom,0px))!important;z-index:9999!important}
+      .rb-scroll-top.is-visible{opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:auto!important}
+    }
+  </style>
+  <script>
+  document.addEventListener('DOMContentLoaded',function(){
+    var nav=document.getElementById('site-nav');
+    if(nav){
+      nav.querySelectorAll('.menu-item-has-children').forEach(function(item){
+        var link=item.querySelector(':scope > a');
+        var submenu=item.querySelector(':scope > .sub-menu');
+        if(!link||!submenu)return;
+        link.addEventListener('click',function(e){
+          if(window.innerWidth>880)return;
+          e.preventDefault();
+          e.stopPropagation();
+          var willOpen=!item.classList.contains('is-submenu-open');
+          nav.querySelectorAll('.menu-item-has-children.is-submenu-open').forEach(function(other){if(other!==item)other.classList.remove('is-submenu-open');});
+          item.classList.toggle('is-submenu-open',willOpen);
+        },true);
+      });
+    }
+    var btn=document.querySelector('[data-scroll-top]');
+    if(btn){
+      var timer;
+      var sync=function(){
+        var y=window.pageYOffset||document.documentElement.scrollTop||0;
+        if(y>220){
+          btn.classList.add('is-visible');
+          clearTimeout(timer);
+          timer=setTimeout(function(){btn.classList.remove('is-visible');},1800);
+        }else{
+          btn.classList.remove('is-visible');
+        }
+      };
+      window.addEventListener('scroll',sync,{passive:true});
+      window.addEventListener('touchmove',sync,{passive:true});
+      btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+      sync();
+    }
+  });
+  </script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
