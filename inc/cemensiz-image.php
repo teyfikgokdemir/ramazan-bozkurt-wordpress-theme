@@ -28,6 +28,40 @@ function rb_assign_cemensiz_product_image_v1() {
 add_action('admin_init', 'rb_assign_cemensiz_product_image_v1', 190);
 
 /**
+ * Client correction: the company sells finger sausage, not ring/kangal sausage.
+ * Make the finger-sausage visual the featured image for Kayseri Sucuğu and remove
+ * the same image from the gallery so it is not duplicated below the main image.
+ */
+function rb_assign_parmak_sucuk_product_image_v1() {
+    if (get_option('rb_parmak_sucuk_product_image_v1')) { return; }
+
+    $product = get_page_by_path('kayseri-sucugu-500-g', OBJECT, 'product');
+    if (!$product) { return; }
+
+    $image_id = rb_media_id_first([
+        'ramazan-bozkurt-kayseri-parmak-sucuk',
+        'ramazan-bozkurt-parmak-sucuk',
+        'kayseri-parmak-sucuk',
+        'parmak-sucuk',
+    ]);
+    if (!$image_id) { return; }
+
+    set_post_thumbnail((int) $product->ID, $image_id);
+
+    $current_gallery = array_filter(array_map('intval', explode(',', (string) get_post_meta($product->ID, '_product_image_gallery', true))));
+    $current_gallery = array_values(array_diff($current_gallery, [$image_id]));
+    update_post_meta($product->ID, '_product_image_gallery', implode(',', $current_gallery));
+
+    clean_post_cache((int) $product->ID);
+    if (function_exists('wc_delete_product_transients')) {
+        wc_delete_product_transients((int) $product->ID);
+    }
+
+    update_option('rb_parmak_sucuk_product_image_v1', 1);
+}
+add_action('admin_init', 'rb_assign_parmak_sucuk_product_image_v1', 195);
+
+/**
  * The Sırt and Antrikot images were finalized manually in WooCommerce.
  * Mark the old automatic swap jobs complete before they can run again so
  * the client's final main images and galleries are never overwritten.
