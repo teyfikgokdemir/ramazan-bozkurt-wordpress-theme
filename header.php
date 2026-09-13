@@ -1,3 +1,7 @@
+<?php
+$rb_seo_audit_fixes = get_template_directory() . '/inc/seo-audit-fixes.php';
+if (file_exists($rb_seo_audit_fixes)) { require_once $rb_seo_audit_fixes; }
+?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
