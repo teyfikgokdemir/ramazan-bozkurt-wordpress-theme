@@ -16,23 +16,29 @@ function rb_audit_page_slug() {
     return ($post && !empty($post->post_name)) ? (string) $post->post_name : '';
 }
 
+function rb_audit_page_number_suffix() {
+    $paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
+    return $paged > 1 ? ' | Sayfa ' . $paged : '';
+}
+
 function rb_audit_title() {
     $brand = 'Ramazan Bozkurt';
+    $suffix = rb_audit_page_number_suffix();
 
     if (is_front_page()) {
         return 'Ramazan Bozkurt | Kayseri Pastırması, Sucuk ve Kavurma';
     }
     if (function_exists('is_shop') && is_shop()) {
-        return 'Kayseri Pastırması, Sucuk ve Kavurma | Ramazan Bozkurt';
+        return 'Kayseri Pastırması, Sucuk ve Kavurma | Ramazan Bozkurt' . $suffix;
     }
     if (is_page('toptan-satis')) {
         return 'Toptan Et Ürünleri ve Kurumsal Tedarik | Ramazan Bozkurt';
     }
     if (is_page('blog') || is_home()) {
-        return 'Kayseri Et Ürünleri Rehberi ve Blog | Ramazan Bozkurt';
+        return 'Kayseri Et Ürünleri Rehberi ve Blog | Ramazan Bozkurt' . $suffix;
     }
     if (is_page('yemek-tarifleri')) {
-        return 'Kayseri Yemek Tarifleri | Ramazan Bozkurt';
+        return 'Kayseri Yemek Tarifleri | Ramazan Bozkurt' . $suffix;
     }
     if (is_page('hakkimizda')) {
         return 'Hakkımızda | Ramazan Bozkurt Et ve Et Mamulleri';
@@ -48,7 +54,8 @@ function rb_audit_title() {
     }
     if (is_tax('product_cat')) {
         $term = get_queried_object();
-        return ($term && !empty($term->name)) ? $term->name . ' | Kayseri Et Ürünleri | ' . $brand : 'Ürünler | ' . $brand;
+        $title = ($term && !empty($term->name)) ? $term->name . ' | Kayseri Et Ürünleri | ' . $brand : 'Ürünler | ' . $brand;
+        return $title . $suffix;
     }
     if (is_singular('product')) {
         return get_the_title(get_queried_object_id()) . ' | ' . $brand;
@@ -61,14 +68,21 @@ function rb_audit_title() {
     }
     if (is_category() || is_tag() || is_tax()) {
         $term = get_queried_object();
-        return ($term && !empty($term->name)) ? $term->name . ' | ' . $brand : $brand;
+        $title = ($term && !empty($term->name)) ? $term->name . ' | ' . $brand : $brand;
+        return $title . $suffix;
     }
     if (is_archive()) {
-        return wp_strip_all_tags(get_the_archive_title()) . ' | ' . $brand;
+        return wp_strip_all_tags(get_the_archive_title()) . ' | ' . $brand . $suffix;
     }
 
-    return $brand . ' | Kayseri Et ve Et Mamulleri';
+    return $brand . ' | Kayseri Et ve Et Mamulleri' . $suffix;
 }
+
+function rb_audit_pre_document_title($title) {
+    if (rb_audit_has_seo_plugin()) { return $title; }
+    return rb_audit_title();
+}
+add_filter('pre_get_document_title', 'rb_audit_pre_document_title', 999);
 
 function rb_audit_document_title_parts($parts) {
     if (rb_audit_has_seo_plugin()) { return $parts; }
@@ -76,23 +90,26 @@ function rb_audit_document_title_parts($parts) {
     unset($parts['tagline'], $parts['site']);
     return $parts;
 }
-add_filter('document_title_parts', 'rb_audit_document_title_parts', 100);
+add_filter('document_title_parts', 'rb_audit_document_title_parts', 999);
 
 function rb_audit_description() {
+    $page_no = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
+    $page_suffix = $page_no > 1 ? ' Bu arşivin ' . $page_no . '. sayfasını görüntülüyorsunuz.' : '';
+
     if (is_front_page()) {
         return 'Ramazan Bozkurt Et ve Et Mamulleri; Kayseri pastırması, sucuk, kavurma ve mantıda perakende sipariş ile işletmelere kurumsal tedarik çözümleri sunar.';
     }
     if (function_exists('is_shop') && is_shop()) {
-        return 'Sırt, antrikot, tütünlük ve çemensiz pastırma ile Kayseri sucuğu, kavurma ve mantı ürünlerini gramaj ve güncel fiyat seçenekleriyle inceleyin.';
+        return 'Sırt, antrikot, tütünlük ve çemensiz pastırma ile Kayseri sucuğu, kavurma ve mantı ürünlerini gramaj ve güncel fiyat seçenekleriyle inceleyin.' . $page_suffix;
     }
     if (is_page('toptan-satis')) {
         return 'Market, şarküteri, restoran, otel ve düzenli alım yapan işletmelere Kayseri pastırması, sucuk, kavurma ve mantıda kurumsal tedarik ve toptan satış teklifi.';
     }
     if (is_page('blog') || is_home()) {
-        return 'Kayseri pastırması, sucuk, kavurma ve mantı hakkında saklama, servis, pişirme ve ürün seçimi rehberlerini Ramazan Bozkurt blogunda inceleyin.';
+        return 'Kayseri pastırması, sucuk, kavurma ve mantı hakkında saklama, servis, pişirme ve ürün seçimi rehberlerini Ramazan Bozkurt blogunda inceleyin.' . $page_suffix;
     }
     if (is_page('yemek-tarifleri')) {
-        return 'Pastırma, sucuk, kavurma ve Kayseri mantısıyla hazırlanabilecek tarifleri, pişirme önerilerini ve servis fikirlerini keşfedin.';
+        return 'Pastırma, sucuk, kavurma ve Kayseri mantısıyla hazırlanabilecek tarifleri, pişirme önerilerini ve servis fikirlerini keşfedin.' . $page_suffix;
     }
     if (is_page('hakkimizda')) {
         return 'Ramazan Bozkurt Et ve Et Mamulleri’nin Kayseri merkezli marka yaklaşımını, ürün gruplarını ve perakende ile kurumsal tedarik modelini inceleyin.';
@@ -109,10 +126,10 @@ function rb_audit_description() {
     if (is_tax('product_cat')) {
         $term = get_queried_object();
         if ($term && !empty($term->description)) {
-            return wp_html_excerpt(wp_strip_all_tags($term->description), 155, '…');
+            return wp_html_excerpt(wp_strip_all_tags($term->description), 145, '…') . $page_suffix;
         }
         if ($term && !empty($term->name)) {
-            return $term->name . ' çeşitlerini güncel gramaj, fiyat ve sipariş seçenekleriyle Ramazan Bozkurt mağazasında inceleyin.';
+            return $term->name . ' çeşitlerini güncel gramaj, fiyat ve sipariş seçenekleriyle Ramazan Bozkurt mağazasında inceleyin.' . $page_suffix;
         }
     }
     if (is_singular('product')) {
@@ -122,19 +139,23 @@ function rb_audit_description() {
     }
     if (is_singular()) {
         $post_id = get_queried_object_id();
+        $title = trim(wp_strip_all_tags(get_the_title($post_id)));
         $excerpt = trim(wp_strip_all_tags(get_post_field('post_excerpt', $post_id)));
-        if ($excerpt) { return wp_html_excerpt($excerpt, 155, '…'); }
+        if ($excerpt) { return wp_html_excerpt($title . ': ' . $excerpt, 155, '…'); }
         $content = trim(wp_strip_all_tags(strip_shortcodes(get_post_field('post_content', $post_id))));
-        $prefix = get_the_title($post_id) . ': ';
-        return wp_html_excerpt($prefix . $content, 155, '…');
+        if ($content) { return wp_html_excerpt($title . ': ' . $content, 155, '…'); }
+        return $title . ' hakkında Ramazan Bozkurt Et ve Et Mamulleri tarafından sunulan güncel bilgileri inceleyin.';
     }
     if (is_category() || is_tag() || is_tax()) {
         $term = get_queried_object();
         $name = ($term && !empty($term->name)) ? $term->name : 'İçerikler';
-        return $name . ' hakkında Ramazan Bozkurt tarafından hazırlanan güncel içerikleri ve rehberleri inceleyin.';
+        return $name . ' hakkında Ramazan Bozkurt tarafından hazırlanan güncel içerikleri ve rehberleri inceleyin.' . $page_suffix;
+    }
+    if (is_archive()) {
+        return wp_strip_all_tags(get_the_archive_title()) . ' arşivindeki güncel içerikleri Ramazan Bozkurt sitesinde inceleyin.' . $page_suffix;
     }
 
-    return 'Ramazan Bozkurt Et ve Et Mamulleri’nin Kayseri pastırması, sucuk, kavurma, mantı, tarif ve kurumsal tedarik içeriklerini keşfedin.';
+    return 'Ramazan Bozkurt Et ve Et Mamulleri’nin Kayseri pastırması, sucuk, kavurma, mantı, tarif ve kurumsal tedarik içeriklerini keşfedin.' . $page_suffix;
 }
 
 function rb_audit_canonical_url() {
@@ -146,7 +167,9 @@ function rb_audit_canonical_url() {
     }
     if (is_home()) {
         $posts_page = (int) get_option('page_for_posts');
-        return $posts_page ? get_permalink($posts_page) : home_url('/blog/');
+        $base = $posts_page ? get_permalink($posts_page) : home_url('/blog/');
+        $paged = max(1, (int) get_query_var('paged'));
+        return $paged > 1 ? get_pagenum_link($paged) : $base;
     }
     if (is_tax() || is_category() || is_tag()) {
         $url = get_term_link(get_queried_object());
