@@ -104,6 +104,8 @@ function rb_final_output_schema() {
         'telephone' => $phone,
         'address' => [
             '@type' => 'PostalAddress',
+            'streetAddress' => 'Süleymanlı Mah. 6952. Sk. No: 47',
+            'postalCode' => '38280',
             'addressLocality' => 'Talas',
             'addressRegion' => 'Kayseri',
             'addressCountry' => 'TR',
