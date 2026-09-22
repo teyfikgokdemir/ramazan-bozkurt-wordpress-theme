@@ -121,7 +121,7 @@ function rb_ai_llms_full_txt() {
         '',
         'Canonical domain: ' . rb_ai_md_link('ramazanbozkurt.com', rb_ai_url('/')),
         'Language: tr-TR',
-        'Location: Talas, Kayseri, Türkiye',
+        'Location: Süleymanlı Mah. 6952. Sk. No: 47, 38280 Talas, Kayseri, Türkiye',
         'Phone / WhatsApp: ' . $phone,
         '',
         '## Business summary',
