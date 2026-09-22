@@ -101,6 +101,21 @@ function rb_seed_site_structure() {
 }
 add_action('admin_init', 'rb_seed_site_structure', 30);
 
+function rb_complete_contact_address_v1() {
+    if (get_option('rb_complete_contact_address_v1')) { return; }
+    $page = get_page_by_path('iletisim');
+    if ($page) {
+        $address = 'Süleymanlı Mah. 6952. Sk. No: 47, 38280 Talas / Kayseri';
+        $content = (string) $page->post_content;
+        if (strpos($content, $address) === false) {
+            $content .= '<h2>Adres</h2><p><strong>Ramazan Bozkurt Et ve Et Mamulleri</strong><br>' . esc_html($address) . '</p>';
+            wp_update_post(['ID' => $page->ID, 'post_content' => $content]);
+        }
+    }
+    update_option('rb_complete_contact_address_v1', 1);
+}
+add_action('admin_init', 'rb_complete_contact_address_v1', 35);
+
 function rb_seed_premium_demo_v3() {
     if (get_option('rb_site_seed_v3')) { return; }
 
