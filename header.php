@@ -15,7 +15,8 @@ if (file_exists($rb_seo_audit_fixes)) { require_once $rb_seo_audit_fixes; }
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/wholesale-landing.css?v=' . wp_get_theme()->get('Version')); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/product-card-fix.css?v=' . wp_get_theme()->get('Version')); ?>">
-  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . wp_get_theme()->get('Version')); ?>">
+  <?php $rb_commerce_css = get_template_directory() . '/assets/css/commerce.css'; $rb_commerce_ver = file_exists($rb_commerce_css) ? filemtime($rb_commerce_css) : wp_get_theme()->get('Version'); ?>
+  <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/commerce.css?v=' . $rb_commerce_ver); ?>">
   <?php $rb_nav_css = get_template_directory() . '/assets/css/navigation.css'; $rb_nav_ver = file_exists($rb_nav_css) ? filemtime($rb_nav_css) : wp_get_theme()->get('Version'); ?>
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/navigation.css?v=' . $rb_nav_ver); ?>">
   <link rel="stylesheet" href="<?php echo esc_url(get_template_directory_uri() . '/assets/css/visual-effects.css?v=' . wp_get_theme()->get('Version')); ?>">
