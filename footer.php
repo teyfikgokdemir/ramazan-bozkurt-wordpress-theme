@@ -92,6 +92,19 @@ $rb_whatsapp_url = 'https://wa.me/' . $rb_whatsapp_phone . '?text=' . rawurlenco
 .rb-cookie{position:fixed;left:20px;right:20px;bottom:20px;z-index:2000}.rb-cookie__inner{width:min(100%,980px);margin:auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:26px;border:1px solid var(--rb-border-strong);border-radius:20px;background:rgba(18,13,10,.98);box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(16px)}.rb-cookie strong{color:var(--rb-cream);font-size:16px}.rb-cookie p{margin:5px 0 0;color:var(--rb-muted);font-size:13px;max-width:680px}.rb-cookie p a{color:var(--rb-gold-soft);text-decoration:underline}.rb-cookie__actions{display:flex;gap:10px;flex:0 0 auto}
 @media(prefers-reduced-motion:reduce){.rb-whatsapp{animation:none}.rb-whatsapp,.rb-scroll-top{transition:none}}@media(max-width:700px){.rb-cookie{left:12px;right:12px;bottom:12px}.rb-cookie__inner{display:grid;padding:18px}.rb-cookie__actions{width:100%}.rb-cookie__actions .rb-btn{flex:1}.rb-payment-strip{align-items:flex-start;flex-direction:column}.rb-payment-logos{justify-content:flex-start}.rb-whatsapp{left:14px;bottom:14px;width:52px;height:52px}.rb-whatsapp svg{width:27px;height:27px}.rb-scroll-top{right:14px;bottom:14px}.site-footer__grid{grid-template-columns:1fr}}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('footer a[href*="olivon.com.tr"]').forEach(function (link) {
+    try {
+      var url = new URL(link.href, window.location.href);
+      if (!url.searchParams.has('utm_source')) url.searchParams.set('utm_source', 'ramazanbozkurt');
+      if (!url.searchParams.has('utm_medium')) url.searchParams.set('utm_medium', 'footer');
+      if (!url.searchParams.has('utm_campaign')) url.searchParams.set('utm_campaign', 'client_referral');
+      link.href = url.toString();
+    } catch (e) {}
+  });
+});
+</script>
 <?php wp_footer(); ?>
 </body>
 </html>
